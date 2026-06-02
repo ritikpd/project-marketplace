@@ -3,20 +3,36 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: NEPZIA Marketplace API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: listings
+    description: Product listing operations
+  - name: categories
+    description: Category operations
+  - name: wishlist
+    description: Wishlist operations
+  - name: messages
+    description: Messaging operations
+  - name: users
+    description: User/seller profile operations
+  - name: stats
+    description: Statistics and dashboard
+  - name: offers
+    description: Make Offer / negotiation operations
+  - name: notifications
+    description: In-app notification operations
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +40,881 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ─── Listings ───────────────────────────────────────────────────────────────
+  /listings:
+    get:
+      operationId: listListings
+      tags: [listings]
+      summary: List/search listings
+      parameters:
+        - name: q
+          in: query
+          schema: { type: string }
+        - name: category
+          in: query
+          schema: { type: string }
+        - name: location
+          in: query
+          schema: { type: string }
+        - name: condition
+          in: query
+          schema: { type: string }
+        - name: minPrice
+          in: query
+          schema: { type: number }
+        - name: maxPrice
+          in: query
+          schema: { type: number }
+        - name: sort
+          in: query
+          schema: { type: string }
+        - name: featured
+          in: query
+          schema: { type: boolean }
+        - name: page
+          in: query
+          schema: { type: integer }
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Listings page
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListingsPage"
+    post:
+      operationId: createListing
+      tags: [listings]
+      summary: Create a new listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingInput"
+      responses:
+        "201":
+          description: Created listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+
+  /listings/featured:
+    get:
+      operationId: getFeaturedListings
+      tags: [listings]
+      summary: Get featured/boosted listings
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Featured listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /listings/recent:
+    get:
+      operationId: getRecentListings
+      tags: [listings]
+      summary: Get recently posted listings
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Recent listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /listings/nearby:
+    get:
+      operationId: getNearbyListings
+      tags: [listings]
+      summary: Get listings near a lat/lng coordinate
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          schema: { type: number }
+        - name: lng
+          in: query
+          required: true
+          schema: { type: number }
+        - name: radius
+          in: query
+          description: Radius in km (default 50)
+          schema: { type: number }
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Nearby listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /listings/{id}:
+    get:
+      operationId: getListing
+      tags: [listings]
+      summary: Get listing by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Listing detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateListing
+      tags: [listings]
+      summary: Update listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingUpdate"
+      responses:
+        "200":
+          description: Updated listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+    delete:
+      operationId: deleteListing
+      tags: [listings]
+      summary: Delete listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Deleted
+
+  /listings/{id}/similar:
+    get:
+      operationId: getSimilarListings
+      tags: [listings]
+      summary: Get similar listings
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Similar listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /listings/{id}/report:
+    post:
+      operationId: reportListing
+      tags: [listings]
+      summary: Report a listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportInput"
+      responses:
+        "201":
+          description: Report submitted
+
+  /listings/{id}/offers:
+    post:
+      operationId: makeOffer
+      tags: [offers]
+      summary: Make an offer on a listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferInput"
+      responses:
+        "201":
+          description: Offer created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offer"
+
+  # ─── My Listings ────────────────────────────────────────────────────────────
+  /my/listings:
+    get:
+      operationId: getMyListings
+      tags: [listings]
+      summary: Get current user's listings
+      responses:
+        "200":
+          description: My listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /my/offers:
+    get:
+      operationId: getMyOffers
+      tags: [offers]
+      summary: Get offers received and sent by current user
+      responses:
+        "200":
+          description: Offers list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offer"
+
+  # ─── Offers ─────────────────────────────────────────────────────────────────
+  /offers/{id}/respond:
+    patch:
+      operationId: respondToOffer
+      tags: [offers]
+      summary: Accept, reject, or counter an offer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OfferResponse"
+      responses:
+        "200":
+          description: Updated offer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offer"
+
+  # ─── Categories ─────────────────────────────────────────────────────────────
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all categories with listing counts
+      responses:
+        "200":
+          description: Category list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  # ─── Wishlist ────────────────────────────────────────────────────────────────
+  /wishlist:
+    get:
+      operationId: getWishlist
+      tags: [wishlist]
+      summary: Get current user's wishlist
+      responses:
+        "200":
+          description: Wishlist listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /wishlist/{listingId}:
+    post:
+      operationId: addToWishlist
+      tags: [wishlist]
+      summary: Add listing to wishlist
+      parameters:
+        - name: listingId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "201":
+          description: Added
+    delete:
+      operationId: removeFromWishlist
+      tags: [wishlist]
+      summary: Remove listing from wishlist
+      parameters:
+        - name: listingId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Removed
+
+  # ─── Messages ────────────────────────────────────────────────────────────────
+  /conversations:
+    get:
+      operationId: listConversations
+      tags: [messages]
+      summary: List user's conversations
+      responses:
+        "200":
+          description: Conversations list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+    post:
+      operationId: createConversation
+      tags: [messages]
+      summary: Start a conversation about a listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConversationInput"
+      responses:
+        "201":
+          description: Created conversation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+
+  /conversations/{id}/messages:
+    get:
+      operationId: getMessages
+      tags: [messages]
+      summary: Get messages in a conversation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+    post:
+      operationId: sendMessage
+      tags: [messages]
+      summary: Send a message
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+      responses:
+        "201":
+          description: Sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+
+  # ─── Users / Sellers ────────────────────────────────────────────────────────
+  /users/me:
+    get:
+      operationId: getMe
+      tags: [users]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+    patch:
+      operationId: updateMe
+      tags: [users]
+      summary: Update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /users/{id}:
+    get:
+      operationId: getUserProfile
+      tags: [users]
+      summary: Get public seller profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Seller profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SellerProfile"
+
+  /users/{id}/listings:
+    get:
+      operationId: getSellerListings
+      tags: [users]
+      summary: Get listings by seller
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Seller's listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  # ─── Notifications ───────────────────────────────────────────────────────────
+  /notifications:
+    get:
+      operationId: getNotifications
+      tags: [notifications]
+      summary: Get current user's notifications
+      responses:
+        "200":
+          description: Notifications list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AppNotification"
+
+  /notifications/read-all:
+    patch:
+      operationId: markAllNotificationsRead
+      tags: [notifications]
+      summary: Mark all notifications as read
+      responses:
+        "204":
+          description: Done
+
+  /notifications/{id}/read:
+    patch:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark a single notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        "204":
+          description: Done
+
+  # ─── Stats / Wow ─────────────────────────────────────────────────────────────
+  /stats/marketplace:
+    get:
+      operationId: getMarketplaceStats
+      tags: [stats]
+      summary: Get overall marketplace statistics
+      responses:
+        "200":
+          description: Marketplace stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarketplaceStats"
+
+  /stats/categories:
+    get:
+      operationId: getCategoryStats
+      tags: [stats]
+      summary: Get listing counts per category
+      responses:
+        "200":
+          description: Category stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategoryStat"
+
+  # ─── Admin ───────────────────────────────────────────────────────────────────
+  /admin/users:
+    get:
+      operationId: adminListUsers
+      tags: [users]
+      summary: Admin — list all users
+      responses:
+        "200":
+          description: Users list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserProfile"
+
+  /admin/listings:
+    get:
+      operationId: adminListListings
+      tags: [listings]
+      summary: Admin — list all listings
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: All listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /admin/listings/{id}/status:
+    patch:
+      operationId: adminUpdateListingStatus
+      tags: [listings]
+      summary: Admin — update listing status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingStatusUpdate"
+      responses:
+        "200":
+          description: Updated
+
 components:
   schemas:
     HealthStatus:
       type: object
       properties:
-        status:
-          type: string
-      required:
-        - status
+        status: { type: string }
+      required: [status]
 
+    Listing:
+      type: object
+      required: [id, title, price, condition, category, location, status, createdAt, sellerId]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: ["string", "null"] }
+        price: { type: number }
+        condition: { type: string }
+        category: { type: string }
+        location: { type: string }
+        latitude: { type: ["number", "null"] }
+        longitude: { type: ["number", "null"] }
+        images: { type: array, items: { type: string } }
+        status: { type: string }
+        featured: { type: boolean }
+        boosted: { type: boolean }
+        viewCount: { type: integer }
+        sellerId: { type: string }
+        sellerName: { type: ["string", "null"] }
+        sellerAvatar: { type: ["string", "null"] }
+        sellerVerified: { type: boolean }
+        sellerRating: { type: ["number", "null"] }
+        contactPhone: { type: ["string", "null"] }
+        createdAt: { type: string }
+        updatedAt: { type: ["string", "null"] }
+
+    ListingsPage:
+      type: object
+      required: [listings, total, page, limit]
+      properties:
+        listings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+        total: { type: integer }
+        page: { type: integer }
+        limit: { type: integer }
+
+    ListingInput:
+      type: object
+      required: [title, price, condition, category, location]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        price: { type: number }
+        condition: { type: string }
+        category: { type: string }
+        location: { type: string }
+        latitude: { type: number }
+        longitude: { type: number }
+        images: { type: array, items: { type: string } }
+        contactPhone: { type: string }
+        status: { type: string }
+        featured: { type: boolean }
+
+    ListingUpdate:
+      type: object
+      properties:
+        title: { type: string }
+        description: { type: string }
+        price: { type: number }
+        condition: { type: string }
+        category: { type: string }
+        location: { type: string }
+        latitude: { type: number }
+        longitude: { type: number }
+        images: { type: array, items: { type: string } }
+        contactPhone: { type: string }
+        status: { type: string }
+        featured: { type: boolean }
+
+    ListingStatusUpdate:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string }
+
+    ReportInput:
+      type: object
+      required: [reason]
+      properties:
+        reason: { type: string }
+        details: { type: string }
+
+    OfferInput:
+      type: object
+      required: [amount]
+      properties:
+        amount: { type: number }
+        message: { type: string }
+
+    OfferResponse:
+      type: object
+      required: [action]
+      properties:
+        action:
+          type: string
+          enum: [accepted, rejected, countered]
+        counterAmount: { type: number }
+
+    Offer:
+      type: object
+      required: [id, listingId, buyerId, sellerId, amount, status, createdAt]
+      properties:
+        id: { type: integer }
+        listingId: { type: integer }
+        listingTitle: { type: ["string", "null"] }
+        listingImage: { type: ["string", "null"] }
+        buyerId: { type: string }
+        buyerName: { type: ["string", "null"] }
+        sellerId: { type: string }
+        amount: { type: number }
+        message: { type: ["string", "null"] }
+        status: { type: string }
+        counterAmount: { type: ["number", "null"] }
+        createdAt: { type: string }
+
+    AppNotification:
+      type: object
+      required: [id, userId, type, title, body, isRead, createdAt]
+      properties:
+        id: { type: integer }
+        userId: { type: string }
+        type: { type: string }
+        title: { type: string }
+        body: { type: string }
+        data: { type: ["string", "null"] }
+        isRead: { type: boolean }
+        createdAt: { type: string }
+
+    Category:
+      type: object
+      required: [id, name, slug, icon]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        slug: { type: string }
+        icon: { type: string }
+        count: { type: integer }
+
+    UserProfile:
+      type: object
+      required: [id, clerkId, createdAt]
+      properties:
+        id: { type: integer }
+        clerkId: { type: string }
+        name: { type: ["string", "null"] }
+        email: { type: ["string", "null"] }
+        avatar: { type: ["string", "null"] }
+        bio: { type: ["string", "null"] }
+        phone: { type: ["string", "null"] }
+        location: { type: ["string", "null"] }
+        isVerified: { type: boolean }
+        isAdmin: { type: boolean }
+        createdAt: { type: string }
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        name: { type: string }
+        bio: { type: string }
+        phone: { type: string }
+        location: { type: string }
+
+    SellerProfile:
+      type: object
+      required: [id, clerkId, createdAt, listingCount, rating]
+      properties:
+        id: { type: integer }
+        clerkId: { type: string }
+        name: { type: ["string", "null"] }
+        avatar: { type: ["string", "null"] }
+        bio: { type: ["string", "null"] }
+        location: { type: ["string", "null"] }
+        isVerified: { type: boolean }
+        listingCount: { type: integer }
+        rating: { type: number }
+        createdAt: { type: string }
+
+    Conversation:
+      type: object
+      required: [id, listingId, buyerId, sellerId, createdAt]
+      properties:
+        id: { type: integer }
+        listingId: { type: integer }
+        listingTitle: { type: ["string", "null"] }
+        listingImage: { type: ["string", "null"] }
+        buyerId: { type: string }
+        sellerId: { type: string }
+        otherPartyName: { type: ["string", "null"] }
+        otherPartyAvatar: { type: ["string", "null"] }
+        lastMessage: { type: ["string", "null"] }
+        lastMessageAt: { type: ["string", "null"] }
+        unreadCount: { type: integer }
+        createdAt: { type: string }
+
+    ConversationInput:
+      type: object
+      required: [listingId, sellerId]
+      properties:
+        listingId: { type: integer }
+        sellerId: { type: string }
+        initialMessage: { type: string }
+
+    Message:
+      type: object
+      required: [id, conversationId, senderId, content, createdAt]
+      properties:
+        id: { type: integer }
+        conversationId: { type: integer }
+        senderId: { type: string }
+        content: { type: string }
+        createdAt: { type: string }
+
+    MessageInput:
+      type: object
+      required: [content]
+      properties:
+        content: { type: string }
+
+    MarketplaceStats:
+      type: object
+      required: [totalListings, activeListings, totalUsers, totalCategories, totalSellers]
+      properties:
+        totalListings: { type: integer }
+        activeListings: { type: integer }
+        totalUsers: { type: integer }
+        totalCategories: { type: integer }
+        totalSellers: { type: integer }
+        listingsToday: { type: integer }
+
+    CategoryStat:
+      type: object
+      required: [category, count]
+      properties:
+        category: { type: string }
+        count: { type: integer }
+        slug: { type: string }

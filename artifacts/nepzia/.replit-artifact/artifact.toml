@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "NEPZIA Marketplace"
+version = "1.0.0"
+id = "artifacts/nepzia"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21411
+
+[services.development]
+run = "pnpm --filter @workspace/nepzia run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/nepzia", "run", "build" ]
+publicDir = "artifacts/nepzia/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21411"
+BASE_PATH = "/"

@@ -1,0 +1,1 @@
+- [NEPZIA setup](nepzia-setup.md) — full NEPZIA marketplace bootstrap steps and gotchas for future sessions

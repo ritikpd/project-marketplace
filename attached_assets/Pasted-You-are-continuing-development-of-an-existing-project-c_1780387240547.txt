@@ -1,0 +1,124 @@
+You are continuing development of an existing project called NEPZIA.
+
+IMPORTANT:
+Do NOT start a new project.
+Do NOT regenerate the UI from scratch.
+First scan and analyze the entire existing codebase, all pages, routes, components, database schema, APIs, authentication flows, dashboard features, marketplace features, seller system, admin system, and current implementation.
+
+Your task is to continue from the current state of the project and finish everything that is incomplete.
+
+PHASE 1 — FULL PROJECT AUDIT
+
+Before making changes:
+
+1. Scan the complete codebase.
+
+2. Create a detailed report of:
+
+   * Broken functionality
+   * Missing pages
+   * Missing routes
+   * Missing database tables
+   * Missing Supabase integrations
+   * UI bugs
+   * Runtime errors
+   * TypeScript errors
+   * Build errors
+   * Authentication issues
+   * Security issues
+   * Missing marketplace features
+   * Missing dashboard features
+   * Missing admin features
+
+3. Identify all placeholders, mock data and fake implementations.
+
+PHASE 2 — FIX EVERYTHING
+
+Then automatically:
+
+* Fix all TypeScript errors
+* Fix all build errors
+* Fix all routing issues
+* Fix all broken buttons
+* Fix all forms
+* Fix all database queries
+* Fix all authentication flows
+* Fix all navigation issues
+* Fix all state management issues
+* Fix all mobile responsiveness issues
+
+Do not leave any TODO items.
+
+PHASE 3 — MARKETPLACE COMPLETION
+
+Implement every missing feature required for a production marketplace.
+
+Include:
+
+* Buy functionality
+* Sell functionality
+* Wishlist
+* Messages
+* Notifications
+* Seller profiles
+* Product management
+* Dashboard
+* Admin dashboard
+* Reports
+* Reviews
+* Ratings
+
+PHASE 4 — IMAGE UPLOAD SYSTEM
+
+Replace ALL image URL fields.
+
+Users must NOT paste image URLs.
+
+Instead:
+
+* Clicking upload image automatically opens device gallery/file picker
+* Drag and drop support
+* Multi-image upload
+* Image preview before publish
+* Image compression
+* Image removal
+* Supabase Storage integration
+
+The system must behave similar to:
+OLX
+Facebook Marketplace
+Airbnb
+
+PHASE 5 — REAL LOCATION SYSTEM
+
+Replace manual location input.
+
+Implement:
+
+* Browser Geolocation API
+* User permission request
+* Auto detect current location
+* Latitude and longitude storage
+* City detection
+* District detection
+* Nearby listings
+* Distance calculation
+* Location based recommendations
+
+PHASE 6 — PRODUCTION READINESS
+
+Ensure:
+
+* No TypeScript errors
+* No console errors
+* No runtime errors
+* No broken routes
+* No broken UI
+* No placeholder components
+* No mock implementations
+
+After every change:
+Run full project checks and continue fixing until the application is production ready.
+
+Do not stop after creating a report.
+Audit → Fix → Test → Continue fixing until complete.
