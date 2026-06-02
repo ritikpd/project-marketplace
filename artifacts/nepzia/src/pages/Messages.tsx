@@ -10,15 +10,16 @@ import {
   useSendMessage,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
-function formatTime(iso: string | null | undefined) {
+function formatTime(iso: string | null | undefined, t: (k: string, opts?: any) => string) {
   if (!iso) return "";
   const d = new Date(iso);
   const now = new Date();
   const diff = now.getTime() - d.getTime();
-  if (diff < 60000) return "just now";
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+  if (diff < 60000) return t("messages.justNow");
+  if (diff < 3600000) return t("messages.mAgo", { n: Math.floor(diff / 60000) });
+  if (diff < 86400000) return t("messages.hAgo", { n: Math.floor(diff / 3600000) });
   return d.toLocaleDateString();
 }
 
@@ -27,6 +28,7 @@ export default function Messages() {
   const queryClient = useQueryClient();
   const [selectedConv, setSelectedConv] = useState<number | null>(null);
   const [message, setMessage] = useState("");
+  const { t } = useTranslation();
 
   const { data: conversations, isLoading: convsLoading } = useListConversations();
   const { data: messages, isLoading: msgsLoading } = useGetMessages(selectedConv!, {
@@ -54,13 +56,13 @@ export default function Messages() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <h1 className="text-2xl font-black text-white mb-6">Messages</h1>
+        <h1 className="text-2xl font-black text-white mb-6">{t("messages.title")}</h1>
 
         <div className="bg-card border border-white/5 rounded-2xl overflow-hidden flex" style={{ height: "calc(100vh - 16rem)" }}>
           {/* Conversations List */}
           <div className={`w-full sm:w-80 flex-shrink-0 border-r border-white/5 overflow-y-auto ${selectedConv ? "hidden sm:flex flex-col" : "flex flex-col"}`}>
             <div className="p-4 border-b border-white/5">
-              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Conversations</p>
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{t("messages.conversations")}</p>
             </div>
             {convsLoading ? (
               <div className="p-4 space-y-3">
@@ -69,8 +71,8 @@ export default function Messages() {
             ) : !(conversations ?? []).length ? (
               <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
                 <MessageSquare className="h-10 w-10 text-muted-foreground mb-3 opacity-40" />
-                <p className="text-muted-foreground text-sm">No conversations yet</p>
-                <p className="text-xs text-muted-foreground/60 mt-1">Message a seller to get started</p>
+                <p className="text-muted-foreground text-sm">{t("messages.noConversations")}</p>
+                <p className="text-xs text-muted-foreground/60 mt-1">{t("messages.noConversationsSub")}</p>
               </div>
             ) : (
               <div className="divide-y divide-white/5">
@@ -92,7 +94,7 @@ export default function Messages() {
                           <p className="text-xs text-muted-foreground/70 truncate mt-0.5">{conv.lastMessage}</p>
                         )}
                       </div>
-                      <span className="text-xs text-muted-foreground/50 flex-shrink-0">{formatTime(conv.lastMessageAt)}</span>
+                      <span className="text-xs text-muted-foreground/50 flex-shrink-0">{formatTime(conv.lastMessageAt, t)}</span>
                     </div>
                   </button>
                 ))}
@@ -105,7 +107,7 @@ export default function Messages() {
             {!selectedConv ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
                 <MessageSquare className="h-12 w-12 text-muted-foreground mb-4 opacity-30" />
-                <p className="text-muted-foreground">Select a conversation to view messages</p>
+                <p className="text-muted-foreground">{t("messages.selectConversation")}</p>
               </div>
             ) : (
               <>
@@ -129,7 +131,7 @@ export default function Messages() {
                       {[0,1,2].map(i => <Skeleton key={i} className="h-12 w-2/3 bg-white/5 rounded-xl" />)}
                     </div>
                   ) : !(messages ?? []).length ? (
-                    <div className="text-center text-muted-foreground text-sm pt-8">No messages yet. Say hello!</div>
+                    <div className="text-center text-muted-foreground text-sm pt-8">{t("messages.noMessages")}</div>
                   ) : (
                     (messages ?? []).map((msg: any) => {
                       const isMe = msg.senderId === user?.id;
@@ -137,7 +139,7 @@ export default function Messages() {
                         <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
                           <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm ${isMe ? "bg-primary text-white rounded-br-sm" : "bg-white/8 text-white rounded-bl-sm border border-white/5"}`}>
                             <p>{msg.content}</p>
-                            <p className={`text-[10px] mt-1 ${isMe ? "text-white/60" : "text-muted-foreground"}`}>{formatTime(msg.createdAt)}</p>
+                            <p className={`text-[10px] mt-1 ${isMe ? "text-white/60" : "text-muted-foreground"}`}>{formatTime(msg.createdAt, t)}</p>
                           </div>
                         </div>
                       );
@@ -146,7 +148,7 @@ export default function Messages() {
                 </div>
 
                 <form onSubmit={handleSend} className="flex gap-3 p-4 border-t border-white/5">
-                  <Input value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Type a message..."
+                  <Input value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t("messages.typePlaceholder")}
                     className="flex-1 bg-card border-white/10 text-white placeholder:text-muted-foreground rounded-xl h-11" />
                   <Button type="submit" disabled={!message.trim() || sendMessage.isPending}
                     className="bg-primary hover:bg-primary/90 text-white rounded-xl h-11 px-4">

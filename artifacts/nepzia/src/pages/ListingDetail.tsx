@@ -18,6 +18,7 @@ import {
   useReportListing,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 const ListingMap = lazy(() => import("@/components/ListingMap").then(m => ({ default: m.ListingMap })));
 
@@ -48,6 +49,7 @@ export default function ListingDetail() {
   const [showPhone, setShowPhone] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showBuyNow, setShowBuyNow] = useState(false);
+  const { t } = useTranslation();
 
   const { data: listing, isLoading } = useGetListing(id, { query: { queryKey: getGetListingQueryKey(id), enabled: !!id } });
   const { data: similar } = useGetSimilarListings(id, { query: { queryKey: getGetSimilarListingsQueryKey(id), enabled: !!id } });
@@ -102,8 +104,8 @@ export default function ListingDetail() {
   if (!listing) {
     return (
       <div className="container mx-auto px-4 py-24 text-center">
-        <h2 className="text-2xl font-bold text-white mb-3">Listing not found</h2>
-        <Link href="/browse"><Button variant="outline" className="border-white/10 text-white">Browse listings</Button></Link>
+        <h2 className="text-2xl font-bold text-white mb-3">{t("listing.notFound")}</h2>
+        <Link href="/browse"><Button variant="outline" className="border-white/10 text-white">{t("listing.browseListings")}</Button></Link>
       </div>
     );
   }
@@ -136,9 +138,9 @@ export default function ListingDetail() {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
-          <Link href="/" className="hover:text-white transition-colors">Home</Link>
+          <Link href="/" className="hover:text-white transition-colors">{t("listing.home")}</Link>
           <span>/</span>
-          <Link href="/browse" className="hover:text-white transition-colors">Browse</Link>
+          <Link href="/browse" className="hover:text-white transition-colors">{t("listing.browse")}</Link>
           <span>/</span>
           <Link href={`/browse?category=${listing.category}`} className="hover:text-white transition-colors">{listing.category}</Link>
           <span>/</span>
@@ -151,7 +153,7 @@ export default function ListingDetail() {
             <div className="relative rounded-2xl overflow-hidden bg-card border border-white/5 mb-3">
               <img src={images[imageIdx]} alt={listing.title} className="w-full aspect-[4/3] object-cover" />
               {listing.featured && (
-                <Badge className="absolute top-4 left-4 bg-primary text-white border-none">Featured</Badge>
+                <Badge className="absolute top-4 left-4 bg-primary text-white border-none">{t("listing.featured")}</Badge>
               )}
               {images.length > 1 && (
                 <>
@@ -167,7 +169,7 @@ export default function ListingDetail() {
               )}
               <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-xs text-white/60 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-full">
                 <Eye className="h-3 w-3" />
-                {listing.viewCount} views
+                {t("listing.views", { count: listing.viewCount })}
               </div>
             </div>
             {images.length > 1 && (
@@ -183,19 +185,19 @@ export default function ListingDetail() {
 
             {/* Description */}
             <div className="mt-6 bg-card border border-white/5 rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">Description</h2>
-              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{listing.description ?? "No description provided."}</p>
+              <h2 className="text-lg font-semibold text-white mb-4">{t("listing.description")}</h2>
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap">{listing.description ?? t("listing.noDescription")}</p>
             </div>
 
             {/* Map */}
             <div className="mt-6">
               <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-primary" /> General Location
+                <MapPin className="h-4 w-4 text-primary" /> {t("listing.generalLocation")}
               </h2>
               <Suspense fallback={<Skeleton className="h-56 w-full rounded-xl bg-white/5" />}>
                 <ListingMap city={listing.location} title={listing.title} />
               </Suspense>
-              <p className="text-xs text-muted-foreground/60 mt-2">Exact address will be shared after contact</p>
+              <p className="text-xs text-muted-foreground/60 mt-2">{t("listing.exactAddressNote")}</p>
             </div>
           </div>
 
@@ -229,21 +231,21 @@ export default function ListingDetail() {
                   <Button onClick={() => setShowBuyNow(true)}
                     className="w-full bg-gradient-to-r from-primary to-rose-600 hover:from-primary/90 hover:to-rose-600/90 text-white h-12 rounded-xl font-bold shadow-lg shadow-primary/30">
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    Buy Now
+                    {t("listing.buyNow")}
                   </Button>
                   <Button onClick={handleContact} variant="outline" className="w-full border-white/10 text-white hover:bg-white/5 h-12 rounded-xl font-semibold">
                     <MessageSquare className="h-4 w-4 mr-2" />
-                    Message Seller
+                    {t("listing.messageSeller")}
                   </Button>
                   <Button variant="outline" onClick={() => setShowOfferModal(true)}
                     className="w-full border-white/10 text-white hover:bg-white/5 h-12 rounded-xl font-semibold">
                     <Tag className="h-4 w-4 mr-2 text-yellow-400" />
-                    Make Offer
+                    {t("listing.makeOffer")}
                   </Button>
                   {listing.contactPhone && (
                     <Button variant="outline" onClick={() => setShowPhone(true)} className="w-full border-white/10 text-white hover:bg-white/5 h-11 rounded-xl font-semibold">
                       <Phone className="h-4 w-4 mr-2 text-primary" />
-                      {showPhone ? listing.contactPhone : "Show Phone Number"}
+                      {showPhone ? listing.contactPhone : t("listing.showPhone")}
                     </Button>
                   )}
                 </div>
@@ -251,7 +253,7 @@ export default function ListingDetail() {
               <Show when="signed-out">
                 <Link href="/sign-in">
                   <Button className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-xl font-semibold">
-                    Sign in to Contact Seller
+                    {t("listing.signInToContact")}
                   </Button>
                 </Link>
               </Show>
@@ -261,7 +263,7 @@ export default function ListingDetail() {
             <div className="bg-card border border-white/5 rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Banknote className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-semibold text-white">Payment Options</h3>
+                <h3 className="text-sm font-semibold text-white">{t("listing.paymentOptions")}</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {PAYMENT_OPTIONS.map(p => (
@@ -270,7 +272,7 @@ export default function ListingDetail() {
                   </span>
                 ))}
               </div>
-              <p className="text-xs text-muted-foreground/60 mt-2">Negotiate payment method with seller</p>
+              <p className="text-xs text-muted-foreground/60 mt-2">{t("listing.negotiatePayment")}</p>
             </div>
 
             {/* Seller Card */}
@@ -286,15 +288,15 @@ export default function ListingDetail() {
                   )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-white truncate">{listing.sellerName ?? "Seller"}</span>
+                      <span className="font-semibold text-white truncate">{listing.sellerName ?? t("listing.seller")}</span>
                       {listing.sellerVerified && <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />}
                     </div>
                     <div className="flex items-center gap-2 mt-1">
                       <Star className="h-3.5 w-3.5 text-yellow-400 fill-current" />
                       <span className="text-sm text-yellow-400 font-medium">{listing.sellerRating ?? 4.5}</span>
-                      <span className="text-xs text-muted-foreground">Verified Seller</span>
+                      <span className="text-xs text-muted-foreground">{t("listing.verifiedSeller")}</span>
                     </div>
-                    <p className="text-xs text-primary mt-1 font-medium">View Profile</p>
+                    <p className="text-xs text-primary mt-1 font-medium">{t("listing.viewProfile")}</p>
                   </div>
                 </div>
               </div>
@@ -304,14 +306,14 @@ export default function ListingDetail() {
             <div className="bg-card border border-white/5 rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Shield className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-semibold text-white">Safety Tips</h3>
+                <h3 className="text-sm font-semibold text-white">{t("listing.safetyTips")}</h3>
               </div>
               <ul className="space-y-1.5 text-xs text-muted-foreground">
-                <li>Meet in a public place to inspect the item</li>
-                <li>Don't send money before seeing the product</li>
-                <li>Check all functionality before payment</li>
-                <li>Ask for original receipt if available</li>
-                <li>Use digital payment with proof of transaction</li>
+                <li>{t("listing.safetyTip1")}</li>
+                <li>{t("listing.safetyTip2")}</li>
+                <li>{t("listing.safetyTip3")}</li>
+                <li>{t("listing.safetyTip4")}</li>
+                <li>{t("listing.safetyTip5")}</li>
               </ul>
             </div>
 
@@ -319,13 +321,13 @@ export default function ListingDetail() {
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={handleShare} className="flex-1 border-white/10 text-muted-foreground hover:text-white hover:bg-white/5">
                 <Share2 className="h-4 w-4 mr-2" />
-                Share
+                {t("listing.share")}
               </Button>
               <Show when="signed-in">
                 <Button variant="outline" size="sm" onClick={() => reportListing.mutate({ id, data: { reason: "Suspicious listing", details: "" } })}
                   className="flex-1 border-white/10 text-muted-foreground hover:text-red-400 hover:bg-red-400/5 hover:border-red-400/20">
                   <Flag className="h-4 w-4 mr-2" />
-                  Report
+                  {t("listing.report")}
                 </Button>
               </Show>
             </div>
@@ -335,7 +337,7 @@ export default function ListingDetail() {
         {/* Similar Listings */}
         {similar && similar.length > 0 && (
           <div className="mt-16">
-            <h2 className="text-2xl font-bold text-white mb-6">Similar Listings</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">{t("listing.similarListings")}</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               {(similar as any[]).slice(0, 6).map((l: any) => (
                 <ListingCard key={l.id} listing={l} />

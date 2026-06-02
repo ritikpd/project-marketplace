@@ -3,8 +3,10 @@ import { Listing } from "@workspace/api-client-react";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MapPin, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 export function ListingCard({ listing }: { listing: Listing }) {
+  const { t } = useTranslation();
   const rawImage = listing.images?.[0];
   const imageUrl = rawImage
     ? (rawImage.startsWith("/objects/") ? `/api/storage${rawImage}` : rawImage)
@@ -15,7 +17,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
       <div className="group relative rounded-xl border border-white/5 bg-[#080d1a] overflow-hidden hover-elevate transition-all duration-300 shadow-lg hover:shadow-primary/5 cursor-pointer flex flex-col h-full">
         {listing.featured && (
           <Badge className="absolute top-3 left-3 z-10 bg-primary text-white border-none shadow-md">
-            Featured
+            {t("listing.featured")}
           </Badge>
         )}
         

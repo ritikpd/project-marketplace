@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGetListing, getGetListingQueryKey, useUpdateListing, getGetMyListingsQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ImageUploader, type UploadedImage } from "@/components/ImageUploader";
+import { useTranslation } from "react-i18next";
 
 const CATEGORIES = ["Phones", "Laptops", "Tablets", "Gaming Consoles", "Cameras", "Smart Watches", "Accessories", "Audio Devices", "Drones", "Other Electronics"];
 const CONDITIONS = ["Brand New", "Like New", "Excellent", "Good", "Fair", "For Parts"];
@@ -24,6 +25,7 @@ export default function EditListing() {
   const [images, setImages] = useState<UploadedImage[]>([]);
   const [form, setForm] = useState({ title: "", description: "", price: "", condition: "Good", category: "", location: "", contactPhone: "", status: "active" });
   const [loaded, setLoaded] = useState(false);
+  const { t } = useTranslation();
 
   const { data: listing, isLoading } = useGetListing(id, { query: { queryKey: getGetListingQueryKey(id), enabled: !!id } });
 
@@ -88,26 +90,26 @@ export default function EditListing() {
   }
 
   if (!listing) {
-    return <div className="container mx-auto px-4 py-24 text-center"><p className="text-muted-foreground">Listing not found</p></div>;
+    return <div className="container mx-auto px-4 py-24 text-center"><p className="text-muted-foreground">{t("create.notFound")}</p></div>;
   }
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-10 max-w-2xl">
-        <h1 className="text-3xl font-black text-white tracking-tight mb-2">Edit Listing</h1>
-        <p className="text-muted-foreground mb-8">Update your listing details</p>
+        <h1 className="text-3xl font-black text-white tracking-tight mb-2">{t("edit.title")}</h1>
+        <p className="text-muted-foreground mb-8">{t("edit.subtitle")}</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Info */}
           <div className="bg-card border border-white/5 rounded-2xl p-5 space-y-4">
-            <h2 className="font-semibold text-white text-sm uppercase tracking-wider">Basic Info</h2>
+            <h2 className="font-semibold text-white text-sm uppercase tracking-wider">{t("create.basicInfo")}</h2>
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-2">Title *</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-2">{t("create.titleLabel")}</label>
               <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required
                 className="bg-background border-white/10 text-white rounded-xl" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-2">Description</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-2">{t("create.descriptionLabel")}</label>
               <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 rows={4} className="w-full bg-background border border-white/10 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary resize-none" />
             </div>
@@ -115,7 +117,7 @@ export default function EditListing() {
 
           {/* Photos */}
           <div className="bg-card border border-white/5 rounded-2xl p-5 space-y-4">
-            <h2 className="font-semibold text-white text-sm uppercase tracking-wider">Photos</h2>
+            <h2 className="font-semibold text-white text-sm uppercase tracking-wider">{t("create.photos")}</h2>
             <ImageUploader
               images={images}
               onChange={setImages}
@@ -125,15 +127,15 @@ export default function EditListing() {
 
           {/* Details */}
           <div className="bg-card border border-white/5 rounded-2xl p-5 space-y-4">
-            <h2 className="font-semibold text-white text-sm uppercase tracking-wider">Details</h2>
+            <h2 className="font-semibold text-white text-sm uppercase tracking-wider">{t("create.details")}</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Price (Rs.) *</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("create.priceLabel")}</label>
                 <Input type="number" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} required min="0"
                   className="bg-background border-white/10 text-white rounded-xl" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Condition</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("create.conditionLabel")}</label>
                 <select value={form.condition} onChange={e => setForm(f => ({ ...f, condition: e.target.value }))}
                   className="w-full bg-background border border-white/10 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary h-10">
                   {CONDITIONS.map(c => <option key={c} value={c}>{c}</option>)}
@@ -142,34 +144,34 @@ export default function EditListing() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Category</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("create.categoryLabel")}</label>
                 <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
                   className="w-full bg-background border border-white/10 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary h-10">
                   {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Location</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("create.locationLabel")}</label>
                 <select value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
                   className="w-full bg-background border border-white/10 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary h-10">
-                  <option value="">Select city</option>
+                  <option value="">{t("create.selectCity")}</option>
                   {CITIES.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Contact Phone</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("create.contactPhoneLabel")}</label>
                 <Input value={form.contactPhone} onChange={e => setForm(f => ({ ...f, contactPhone: e.target.value }))}
                   className="bg-background border-white/10 text-white rounded-xl" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Status</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("edit.statusLabel")}</label>
                 <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
                   className="w-full bg-background border border-white/10 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary h-10">
-                  <option value="active">Active</option>
-                  <option value="draft">Draft</option>
-                  <option value="sold">Sold</option>
+                  <option value="active">{t("edit.statusActive")}</option>
+                  <option value="draft">{t("edit.statusDraft")}</option>
+                  <option value="sold">{t("edit.statusSold")}</option>
                 </select>
               </div>
             </div>
@@ -178,11 +180,11 @@ export default function EditListing() {
           <div className="flex gap-3">
             <Button type="button" variant="outline" onClick={() => setLocation(`/listings/${id}`)}
               className="flex-1 border-white/10 text-muted-foreground hover:text-white hover:bg-white/5 h-12 rounded-xl font-semibold">
-              Cancel
+              {t("edit.cancel")}
             </Button>
             <Button type="submit" disabled={updateListing.isPending || isUploading}
               className="flex-1 bg-primary hover:bg-primary/90 text-white h-12 rounded-xl font-semibold shadow-lg shadow-primary/20">
-              {isUploading ? "Uploading photos..." : updateListing.isPending ? "Saving..." : "Save Changes"}
+              {isUploading ? t("edit.uploadingPhotos") : updateListing.isPending ? t("edit.saving") : t("edit.save")}
             </Button>
           </div>
         </form>

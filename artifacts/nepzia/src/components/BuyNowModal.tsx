@@ -3,6 +3,7 @@ import { X, CheckCircle2, Banknote, MessageSquare, Copy, Check } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { useCreateConversation } from "@workspace/api-client-react";
 import { useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
 
 const PAYMENT_METHODS = [
   { name: "eSewa", color: "text-emerald-400", border: "border-emerald-400/30", bg: "bg-emerald-400/10", logo: "📱" },
@@ -25,6 +26,7 @@ export function BuyNowModal({ listingId, listingTitle, price, sellerId, onClose 
   const [selectedPayment, setSelectedPayment] = useState("");
   const [step, setStep] = useState<"choose" | "confirm" | "done">("choose");
   const [copied, setCopied] = useState(false);
+  const { t } = useTranslation();
 
   const createConversation = useCreateConversation({
     mutation: {
@@ -59,7 +61,7 @@ export function BuyNowModal({ listingId, listingTitle, price, sellerId, onClose 
           <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-white"><X className="h-5 w-5" /></button>
           <div className="flex items-center gap-3 mb-1">
             <Banknote className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-bold text-white">Buy Now</h2>
+            <h2 className="text-lg font-bold text-white">{t("buyNow.title")}</h2>
           </div>
           <p className="text-sm text-muted-foreground line-clamp-1">{listingTitle}</p>
           <div className="text-3xl font-black text-white mt-2">Rs. {price.toLocaleString()}</div>
@@ -68,7 +70,7 @@ export function BuyNowModal({ listingId, listingTitle, price, sellerId, onClose 
         <div className="p-6">
           {step === "choose" && (
             <>
-              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Choose Payment Method</p>
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">{t("buyNow.choosePayment")}</p>
               <div className="space-y-2.5 mb-6">
                 {PAYMENT_METHODS.map(m => (
                   <button key={m.name} onClick={() => setSelectedPayment(m.name)}
@@ -85,7 +87,7 @@ export function BuyNowModal({ listingId, listingTitle, price, sellerId, onClose 
               </div>
               <Button onClick={() => setStep("confirm")} disabled={!selectedPayment}
                 className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-xl font-bold shadow-lg shadow-primary/20">
-                Continue
+                {t("buyNow.continue")}
               </Button>
             </>
           )}
@@ -93,18 +95,18 @@ export function BuyNowModal({ listingId, listingTitle, price, sellerId, onClose 
           {step === "confirm" && (
             <>
               <div className="bg-white/3 border border-white/5 rounded-xl p-4 mb-5 space-y-2 text-sm">
-                <div className="flex justify-between"><span className="text-muted-foreground">Item</span><span className="text-white font-medium truncate max-w-[180px]">{listingTitle}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Price</span><span className="text-white font-bold">Rs. {price.toLocaleString()}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">Payment via</span><span className="text-primary font-medium">{selectedPayment}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{t("buyNow.item")}</span><span className="text-white font-medium truncate max-w-[180px]">{listingTitle}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{t("buyNow.price")}</span><span className="text-white font-bold">Rs. {price.toLocaleString()}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{t("buyNow.paymentVia")}</span><span className="text-primary font-medium">{selectedPayment}</span></div>
               </div>
               <p className="text-xs text-muted-foreground mb-5 leading-relaxed">
-                A message will be sent to the seller with your preferred payment method to coordinate the transaction. Always meet in a public place.
+                {t("buyNow.confirmNote")}
               </p>
               <div className="flex gap-2.5">
-                <Button variant="outline" onClick={() => setStep("choose")} className="flex-1 border-white/10 text-muted-foreground hover:text-white h-11 rounded-xl">Back</Button>
+                <Button variant="outline" onClick={() => setStep("choose")} className="flex-1 border-white/10 text-muted-foreground hover:text-white h-11 rounded-xl">{t("buyNow.back")}</Button>
                 <Button onClick={handleConfirm} disabled={createConversation.isPending}
                   className="flex-1 bg-primary hover:bg-primary/90 text-white h-11 rounded-xl font-bold">
-                  {createConversation.isPending ? "Sending..." : "Contact Seller"}
+                  {createConversation.isPending ? t("buyNow.sending") : t("buyNow.contactSeller")}
                 </Button>
               </div>
             </>
@@ -113,18 +115,18 @@ export function BuyNowModal({ listingId, listingTitle, price, sellerId, onClose 
           {step === "done" && (
             <div className="text-center py-4">
               <CheckCircle2 className="h-14 w-14 text-emerald-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
+              <h3 className="text-xl font-bold text-white mb-2">{t("buyNow.messageSent")}</h3>
               <p className="text-sm text-muted-foreground mb-6">
-                The seller has been notified. Check your messages to coordinate payment and pickup.
+                {t("buyNow.messageSentSub")}
               </p>
               <div className="flex gap-2.5">
                 <Button variant="outline" onClick={handleCopyDetails} className="flex-1 border-white/10 text-muted-foreground hover:text-white h-11 rounded-xl text-sm">
-                  {copied ? <><Check className="h-4 w-4 mr-1.5 text-emerald-400" /> Copied</> : <><Copy className="h-4 w-4 mr-1.5" /> Copy Details</>}
+                  {copied ? <><Check className="h-4 w-4 mr-1.5 text-emerald-400" /> {t("buyNow.copied")}</> : <><Copy className="h-4 w-4 mr-1.5" /> {t("buyNow.copyDetails")}</>}
                 </Button>
                 <Button onClick={() => { onClose(); setLocation("/dashboard/messages"); }}
                   className="flex-1 bg-primary hover:bg-primary/90 text-white h-11 rounded-xl font-bold">
                   <MessageSquare className="h-4 w-4 mr-1.5" />
-                  Messages
+                  {t("buyNow.messages")}
                 </Button>
               </div>
             </div>

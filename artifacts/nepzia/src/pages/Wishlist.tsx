@@ -5,18 +5,20 @@ import { ListingCard } from "@/components/ListingCard";
 import { useGetWishlist, getGetWishlistQueryKey, useRemoveFromWishlist } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "wouter";
+import { useTranslation } from "react-i18next";
 
 export default function Wishlist() {
   const queryClient = useQueryClient();
   const { data: wishlist, isLoading } = useGetWishlist();
   const remove = useRemoveFromWishlist({ mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey: getGetWishlistQueryKey() }) } });
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-10 max-w-5xl">
         <div className="flex items-center gap-3 mb-8">
           <Heart className="h-6 w-6 text-primary fill-current" />
-          <h1 className="text-3xl font-black text-white tracking-tight">Saved Items</h1>
+          <h1 className="text-3xl font-black text-white tracking-tight">{t("wishlist.title")}</h1>
           {wishlist && <span className="text-muted-foreground text-sm">({wishlist.length})</span>}
         </div>
 
@@ -35,10 +37,10 @@ export default function Wishlist() {
         ) : !wishlist?.length ? (
           <div className="text-center py-24">
             <Heart className="h-16 w-16 text-muted-foreground mx-auto mb-4 opacity-20" />
-            <h2 className="text-xl font-bold text-white mb-2">Your wishlist is empty</h2>
-            <p className="text-muted-foreground mb-6">Save listings you're interested in</p>
+            <h2 className="text-xl font-bold text-white mb-2">{t("wishlist.empty")}</h2>
+            <p className="text-muted-foreground mb-6">{t("wishlist.emptySub")}</p>
             <Link href="/browse">
-              <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl font-semibold">Browse Listings</Button>
+              <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl font-semibold">{t("wishlist.browse")}</Button>
             </Link>
           </div>
         ) : (

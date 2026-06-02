@@ -6,6 +6,7 @@ import {
   useMarkAllNotificationsRead, useMarkNotificationRead,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 const TYPE_ICON: Record<string, React.ReactNode> = {
   message: <MessageSquare className="h-4 w-4 text-blue-400" />,
@@ -17,18 +18,19 @@ const TYPE_ICON: Record<string, React.ReactNode> = {
   listing_approved: <Package className="h-4 w-4 text-emerald-400" />,
 };
 
-function formatTime(iso: string) {
+function formatTime(iso: string, t: (k: string, opts?: any) => string) {
   const d = new Date(iso);
   const diff = Date.now() - d.getTime();
-  if (diff < 60000) return "just now";
-  if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
-  if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+  if (diff < 60000) return t("notifications.justNow");
+  if (diff < 3600000) return t("notifications.mAgo", { n: Math.floor(diff / 60000) });
+  if (diff < 86400000) return t("notifications.hAgo", { n: Math.floor(diff / 3600000) });
   return d.toLocaleDateString();
 }
 
 export function NotificationsBell() {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const { data: notifications = [] } = useGetNotifications({
     query: {
@@ -67,14 +69,14 @@ export function NotificationsBell() {
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div className="absolute right-0 top-12 z-50 w-80 bg-[#0a0f1d] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
-              <span className="font-semibold text-white text-sm">Notifications</span>
+              <span className="font-semibold text-white text-sm">{t("notifications.title")}</span>
               {unread > 0 && (
                 <button
                   onClick={() => markAll.mutate()}
                   className="text-xs text-primary hover:text-primary/80 flex items-center gap-1"
                 >
                   <CheckCheck className="h-3.5 w-3.5" />
-                  Mark all read
+                  {t("notifications.markAllRead")}
                 </button>
               )}
             </div>
@@ -83,7 +85,7 @@ export function NotificationsBell() {
               {(notifications as any[]).length === 0 ? (
                 <div className="py-10 text-center text-muted-foreground text-sm">
                   <Bell className="h-8 w-8 mx-auto mb-2 opacity-20" />
-                  No notifications yet
+                  {t("notifications.empty")}
                 </div>
               ) : (
                 (notifications as any[]).map((n: any) => (
@@ -98,7 +100,7 @@ export function NotificationsBell() {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-white truncate">{n.title}</p>
                       <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{n.body}</p>
-                      <p className="text-xs text-muted-foreground/50 mt-1">{formatTime(n.createdAt)}</p>
+                      <p className="text-xs text-muted-foreground/50 mt-1">{formatTime(n.createdAt, t)}</p>
                     </div>
                     {!n.isRead && <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-1.5" />}
                   </div>
