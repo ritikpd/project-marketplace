@@ -7,10 +7,12 @@ import messagesRouter from "./messages";
 import categoriesRouter from "./categories";
 import offersRouter from "./offers";
 import notificationsRouter from "./notifications";
+import storageRouter from "./storage";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(storageRouter);
 router.use(listingsRouter);
 router.use(usersRouter);
 router.use(wishlistRouter);

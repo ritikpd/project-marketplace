@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { Plus, X, ImagePlus, DollarSign, Tag, MapPin, Phone, AlignLeft, Type, ChevronDown } from "lucide-react";
+import { DollarSign, Tag, MapPin, Phone, AlignLeft, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateListing, getGetMyListingsQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { ImageUploader, type UploadedImage } from "@/components/ImageUploader";
 
 const CATEGORIES = ["Phones", "Laptops", "Tablets", "Gaming Consoles", "Cameras", "Smart Watches", "Accessories", "Audio Devices", "Drones", "Other Electronics"];
 const CONDITIONS = ["Brand New", "Like New", "Excellent", "Good", "Fair", "For Parts"];
@@ -13,7 +14,7 @@ const CITIES = ["Kathmandu", "Lalitpur", "Bhaktapur", "Pokhara", "Chitwan", "But
 export default function CreateListing() {
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
-  const [imageUrls, setImageUrls] = useState<string[]>([""]);
+  const [images, setImages] = useState<UploadedImage[]>([]);
 
   const [form, setForm] = useState({
     title: "", description: "", price: "", condition: "Good",
@@ -29,9 +30,11 @@ export default function CreateListing() {
     }
   });
 
+  const isUploading = images.some(i => i.uploading);
+
   const handleSubmit = (e: React.FormEvent, asDraft = false) => {
     e.preventDefault();
-    const images = imageUrls.filter(u => u.trim());
+    const imagePaths = images.filter(i => i.objectPath && !i.error).map(i => i.objectPath);
     createListing.mutate({
       data: {
         title: form.title,
@@ -40,16 +43,12 @@ export default function CreateListing() {
         condition: form.condition,
         category: form.category,
         location: form.location,
-        images,
+        images: imagePaths,
         contactPhone: form.contactPhone || undefined,
         status: asDraft ? "draft" : "active",
       }
     });
   };
-
-  const addImage = () => setImageUrls(u => [...u, ""]);
-  const removeImage = (i: number) => setImageUrls(u => u.filter((_, idx) => idx !== i));
-  const updateImage = (i: number, v: string) => setImageUrls(u => u.map((url, idx) => idx === i ? v : url));
 
   const isValid = form.title && form.price && form.category && form.location;
 
@@ -60,7 +59,7 @@ export default function CreateListing() {
         <p className="text-muted-foreground mb-8">List your tech item for sale on NEPZIA</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title */}
+          {/* Basic Info */}
           <div className="bg-card border border-white/5 rounded-2xl p-5 space-y-4">
             <h2 className="font-semibold text-white text-sm uppercase tracking-wider">Basic Info</h2>
             <div>
@@ -79,6 +78,16 @@ export default function CreateListing() {
                 placeholder="Describe the item's condition, what's included, reason for selling..."
                 rows={4} className="w-full bg-background border border-white/10 text-white placeholder:text-muted-foreground rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary resize-none" />
             </div>
+          </div>
+
+          {/* Photos */}
+          <div className="bg-card border border-white/5 rounded-2xl p-5 space-y-4">
+            <h2 className="font-semibold text-white text-sm uppercase tracking-wider">Photos</h2>
+            <ImageUploader
+              images={images}
+              onChange={setImages}
+              disabled={createListing.isPending}
+            />
           </div>
 
           {/* Pricing & Details */}
@@ -133,52 +142,16 @@ export default function CreateListing() {
             </div>
           </div>
 
-          {/* Images */}
-          <div className="bg-card border border-white/5 rounded-2xl p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="font-semibold text-white text-sm uppercase tracking-wider">
-                <ImagePlus className="h-4 w-4 inline mr-1.5 text-primary" />Images (URL)
-              </h2>
-              <button type="button" onClick={addImage}
-                className="text-xs text-primary hover:text-primary/80 font-medium flex items-center gap-1">
-                <Plus className="h-3.5 w-3.5" />Add more
-              </button>
-            </div>
-            <div className="space-y-2">
-              {imageUrls.map((url, i) => (
-                <div key={i} className="flex gap-2">
-                  <Input value={url} onChange={e => updateImage(i, e.target.value)}
-                    placeholder={`https://... (image ${i + 1})`}
-                    className="flex-1 bg-background border-white/10 text-white placeholder:text-muted-foreground rounded-xl text-sm" />
-                  {imageUrls.length > 1 && (
-                    <Button type="button" variant="ghost" size="icon" onClick={() => removeImage(i)}
-                      className="text-muted-foreground hover:text-red-400 hover:bg-red-400/10 rounded-xl flex-shrink-0 h-10 w-10">
-                      <X className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </div>
-            {imageUrls.some(u => u.trim()) && (
-              <div className="flex gap-2 flex-wrap">
-                {imageUrls.filter(u => u.trim()).map((url, i) => (
-                  <img key={i} src={url} alt="" className="w-16 h-16 rounded-lg object-cover border border-white/10 bg-white/5"
-                    onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* Actions */}
           <div className="flex gap-3">
-            <Button type="button" variant="outline" disabled={createListing.isPending}
+            <Button type="button" variant="outline" disabled={createListing.isPending || isUploading}
               onClick={e => handleSubmit(e as any, true)}
               className="flex-1 border-white/10 text-muted-foreground hover:text-white hover:bg-white/5 h-12 rounded-xl font-semibold">
               Save Draft
             </Button>
-            <Button type="submit" disabled={!isValid || createListing.isPending}
+            <Button type="submit" disabled={!isValid || createListing.isPending || isUploading}
               className="flex-1 bg-primary hover:bg-primary/90 text-white h-12 rounded-xl font-semibold shadow-lg shadow-primary/20">
-              {createListing.isPending ? "Publishing..." : "Publish Listing"}
+              {isUploading ? "Uploading photos..." : createListing.isPending ? "Publishing..." : "Publish Listing"}
             </Button>
           </div>
         </form>

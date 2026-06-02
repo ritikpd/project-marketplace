@@ -5,7 +5,10 @@ import { Heart, MapPin, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function ListingCard({ listing }: { listing: Listing }) {
-  const imageUrl = listing.images?.[0] || "https://images.unsplash.com/photo-1526406915894-7bcd65f60845?auto=format&fit=crop&q=80&w=400";
+  const rawImage = listing.images?.[0];
+  const imageUrl = rawImage
+    ? (rawImage.startsWith("/objects/") ? `/api/storage${rawImage}` : rawImage)
+    : "https://images.unsplash.com/photo-1526406915894-7bcd65f60845?auto=format&fit=crop&q=80&w=400";
   
   return (
     <Link href={`/listings/${listing.id}`}>

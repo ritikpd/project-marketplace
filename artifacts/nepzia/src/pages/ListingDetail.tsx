@@ -108,7 +108,10 @@ export default function ListingDetail() {
     );
   }
 
-  const images = listing.images?.length ? listing.images : ["https://images.unsplash.com/photo-1526406915894-7bcd65f60845?w=600&q=80"];
+  const rawImages = listing.images?.length ? listing.images : [];
+  const images = rawImages.length
+    ? rawImages.map(p => p.startsWith("/objects/") ? `/api/storage${p}` : p)
+    : ["https://images.unsplash.com/photo-1526406915894-7bcd65f60845?w=600&q=80"];
 
   const ogImage = images?.[0] ?? "";
   const ogDesc = `${listing.title} — ${listing.condition} condition, Rs. ${listing.price?.toLocaleString()} in ${listing.location}, Nepal. Listed on NEPZIA.`;
