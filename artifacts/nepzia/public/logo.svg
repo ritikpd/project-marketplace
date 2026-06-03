@@ -1,15 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" fill="none">
-  <!-- Deep Blue background for testing, remove for actual transparent SVG if needed, but it helps visualize -->
-  <!-- <rect width="100%" height="100%" fill="#0a0f1d" /> -->
-  
-  <g transform="translate(20, 20)">
-    <!-- Mountain/Flag motif -->
-    <path d="M 0,60 L 30,0 L 50,30 L 70,10 L 90,60 Z" fill="#DC143C" />
-    <path d="M 10,60 L 30,20 L 45,45 L 70,25 L 80,60 Z" fill="#ffffff" opacity="0.9"/>
-    
-    <!-- Text -->
-    <text x="110" y="45" font-family="'Inter', sans-serif" font-weight="900" font-size="42" fill="#ffffff" letter-spacing="2">
-      NEP<tspan fill="#DC143C">Z</tspan>IA
-    </text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" fill="none">
+  <defs>
+    <linearGradient id="mg" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e81c44"/>
+      <stop offset="100%" stop-color="#ff6b9d"/>
+    </linearGradient>
+  </defs>
+  <!-- Left small peak -->
+  <path d="M2 50 L15 24 L28 50Z" fill="#e81c44" opacity="0.45"/>
+  <!-- Main center peak -->
+  <path d="M13 50 L33 5 L53 50Z" fill="url(#mg)"/>
+  <!-- Snow cap -->
+  <path d="M29 13 L33 5 L37 13Z" fill="white" opacity="0.92"/>
+  <!-- Right accent peak -->
+  <path d="M37 50 L52 26 L67 50Z" fill="#e81c44" opacity="0.28"/>
+  <!-- NEPZIA wordmark -->
+  <text x="79" y="39" font-family="Inter,system-ui,-apple-system,sans-serif" font-weight="900" font-size="28" letter-spacing="0.5" fill="white">NEP<tspan fill="#e81c44">Z</tspan>IA</text>
 </svg>

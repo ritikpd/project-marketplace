@@ -1,0 +1,237 @@
+REDESIGN THE ENTIRE NEPZIA MARKETPLACE INTO A MODERN UNICORN STARTUP LEVEL PLATFORM.
+
+CURRENT THEME:
+Dark premium black background with red/pink neon accents.
+
+NEW VISION:
+NEPZIA should become the "OLX + Hamrobazar + Property Finder + Facebook Marketplace of Nepal".
+
+==================================================
+
+UPGRADE THE LOGO
+
+Replace the current logo with a modern geometric mountain-inspired icon.
+
+Requirements:
+- Premium Nepal-inspired mountain shape
+- Minimalist design
+- Red to pink gradient
+- White typography
+- Clean vector style
+- Looks like Airbnb, Stripe, Tesla level branding
+- Animated glow on hover
+
+==================================================
+
+LANDING PAGE REDESIGN
+
+Create a world-class hero section.
+
+Top announcement bar:
+
+🚀 Nepal's #1 Marketplace for Electronics, Cars, Property & Rentals
+
+Hero Headline:
+
+Buy. Sell. Rent.
+Everything In Nepal.
+
+Subheadline:
+
+Verified marketplace for electronics, vehicles, properties, rentals and local services.
+
+Add floating statistics:
+
+100K+ Listings
+50K+ Active Users
+75+ Cities Covered
+24/7 Support
+
+==================================================
+
+ADVANCED SEARCH SECTION
+
+Large marketplace search bar.
+
+Add category tabs:
+
+📱 Electronics
+🚗 Vehicles
+🏠 Property
+🔑 Rentals
+💼 Jobs
+🛠 Services
+
+Add:
+
+Location selector
+Price range
+Category dropdown
+Search button
+
+==================================================
+
+FEATURED CATEGORIES SECTION
+
+Create beautiful animated category cards.
+
+Categories:
+
+Phones
+Laptops
+Cars
+Bikes
+House Rent
+Flat Rent
+Land Sale
+Commercial Property
+Jobs
+Services
+
+Hover Effects:
+- Scale animation
+- Glassmorphism effect
+- Gradient border glow
+
+==================================================
+
+PROPERTY MARKETPLACE MODULE
+
+Create dedicated property section.
+
+Property Types:
+
+Apartment
+House
+Flat
+Land
+Commercial Building
+
+Filters:
+
+Price
+Location
+Bedrooms
+Bathrooms
+Property Type
+
+Cards show:
+
+Image
+Price
+Location
+Bedrooms
+Bathrooms
+Area
+Verified Badge
+
+==================================================
+
+RENTAL MARKETPLACE MODULE
+
+Create rental marketplace.
+
+Categories:
+
+Flat Rent
+House Rent
+Office Rent
+Vehicle Rent
+Bike Rent
+
+Add:
+
+Daily Rent
+Weekly Rent
+Monthly Rent
+
+==================================================
+
+VEHICLE MARKETPLACE MODULE
+
+Categories:
+
+Cars
+Bikes
+Scooters
+Electric Vehicles
+
+Filters:
+
+Brand
+Fuel Type
+Transmission
+Year
+Price
+
+==================================================
+
+TRUST & SAFETY SECTION
+
+Show:
+
+✓ Verified Sellers
+✓ Identity Verification
+✓ Secure Chat
+✓ Scam Protection
+✓ Location Verification
+
+==================================================
+
+ADD MAP INTEGRATION
+
+Google Maps integration.
+
+Users can:
+
+Detect Location
+Search Nearby Listings
+View Property Location
+View Vehicle Location
+
+==================================================
+
+MODERN UI DESIGN
+
+Use:
+
+- Framer Motion animations
+- Smooth page transitions
+- Glassmorphism cards
+- Gradient glow effects
+- Premium shadows
+- Mobile-first responsive design
+
+==================================================
+
+FOOTER
+
+Sections:
+
+Marketplace
+Property
+Rentals
+Vehicles
+Support
+Company
+
+Add:
+
+Social Icons
+Download App Buttons
+Copyright
+
+==================================================
+
+TECH STACK
+
+React
+Next.js
+TailwindCSS
+Shadcn UI
+Framer Motion
+Firebase Auth
+Supabase Database
+
+Generate production-ready code.
+Create premium startup-level UI similar to Airbnb, Stripe, and Facebook Marketplace.
