@@ -92,6 +92,7 @@ export const ListListingsResponse = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })),
@@ -108,7 +109,7 @@ export const CreateListingBody = zod.object({
   "title": zod.string(),
   "description": zod.string().optional(),
   "price": zod.number(),
-  "condition": zod.string(),
+  "condition": zod.string().optional(),
   "category": zod.string(),
   "location": zod.string(),
   "latitude": zod.number().optional(),
@@ -116,7 +117,8 @@ export const CreateListingBody = zod.object({
   "images": zod.array(zod.string()).optional(),
   "contactPhone": zod.string().optional(),
   "status": zod.string().optional(),
-  "featured": zod.boolean().optional()
+  "featured": zod.boolean().optional(),
+  "details": zod.record(zod.string(), zod.unknown()).optional()
 })
 
 
@@ -148,6 +150,7 @@ export const GetFeaturedListingsResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -182,6 +185,7 @@ export const GetRecentListingsResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -219,6 +223,7 @@ export const GetNearbyListingsResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -253,6 +258,7 @@ export const GetListingResponse = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -277,7 +283,8 @@ export const UpdateListingBody = zod.object({
   "images": zod.array(zod.string()).optional(),
   "contactPhone": zod.string().optional(),
   "status": zod.string().optional(),
-  "featured": zod.boolean().optional()
+  "featured": zod.boolean().optional(),
+  "details": zod.record(zod.string(), zod.unknown()).optional()
 })
 
 export const UpdateListingResponse = zod.object({
@@ -301,6 +308,7 @@ export const UpdateListingResponse = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -342,6 +350,7 @@ export const GetSimilarListingsResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -398,6 +407,7 @@ export const GetMyListingsResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -489,6 +499,7 @@ export const GetWishlistResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -662,6 +673,7 @@ export const GetSellerListingsResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })
@@ -763,6 +775,7 @@ export const AdminListListingsResponseItem = zod.object({
   "sellerVerified": zod.boolean().optional(),
   "sellerRating": zod.number().nullish(),
   "contactPhone": zod.string().nullish(),
+  "details": zod.record(zod.string(), zod.unknown()).nullish(),
   "createdAt": zod.string(),
   "updatedAt": zod.string().nullish()
 })

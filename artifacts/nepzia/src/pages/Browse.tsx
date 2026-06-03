@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "wouter";
-import { Search, SlidersHorizontal, X, Mic, MicOff } from "lucide-react";
+import { Search, SlidersHorizontal, X, Mic, MicOff, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -10,23 +10,7 @@ import { ListingCard } from "@/components/ListingCard";
 import { useListListings } from "@workspace/api-client-react";
 import { useVoiceSearch } from "@/hooks/useVoiceSearch";
 import { useTranslation } from "react-i18next";
-
-const CATEGORIES = ["Phones", "Laptops", "Tablets", "Gaming Consoles", "Cameras", "Smart Watches", "Accessories", "Audio Devices", "Drones", "Other Electronics"];
-const CONDITIONS = ["Brand New", "Like New", "Excellent", "Good", "Fair", "For Parts"];
-const CITIES = ["Kathmandu", "Lalitpur", "Bhaktapur", "Pokhara", "Chitwan", "Butwal", "Dharan", "Biratnagar", "Nepalgunj", "Janakpur"];
-
-const CAT_KEYS: Record<string, string> = {
-  "Phones": "browse.categories.phones",
-  "Laptops": "browse.categories.laptops",
-  "Tablets": "browse.categories.tablets",
-  "Gaming Consoles": "browse.categories.gaming",
-  "Cameras": "browse.categories.cameras",
-  "Smart Watches": "browse.categories.watches",
-  "Accessories": "browse.categories.accessories",
-  "Audio Devices": "browse.categories.audio",
-  "Drones": "browse.categories.drones",
-  "Other Electronics": "browse.categories.other",
-};
+import { CATEGORY_GROUPS, CONDITIONS, CITIES, getNameFromSlug, type CategoryType } from "@/lib/categories";
 
 const COND_KEYS: Record<string, string> = {
   "Brand New": "browse.conditions.brandNew",
@@ -48,12 +32,22 @@ function parseSearch(search: string) {
   };
 }
 
+function resolveCategory(raw: string): string {
+  if (!raw) return "";
+  const byName = CATEGORY_GROUPS.flatMap((g) => g.subcategories).find(
+    (s) => s.name === raw,
+  );
+  if (byName) return byName.name;
+  const resolved = getNameFromSlug(raw);
+  return resolved ?? raw;
+}
+
 export default function Browse() {
   const { t } = useTranslation();
   const initial = parseSearch(typeof window !== "undefined" ? window.location.search : "");
   const [q, setQ] = useState(initial.q ?? "");
   const [search, setSearch] = useState(initial.q ?? "");
-  const [category, setCategory] = useState(initial.category ?? "");
+  const [category, setCategory] = useState(resolveCategory(initial.category ?? ""));
   const [condition, setCondition] = useState("");
   const [loc, setLoc] = useState(initial.location ?? "");
   const [minPrice, setMinPrice] = useState("");
@@ -63,6 +57,9 @@ export default function Browse() {
   const [allListings, setAllListings] = useState<any[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
+    Electronics: true, Vehicles: true, Property: true, Jobs: true, Services: true,
+  });
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, isFetching } = useListListings({
@@ -84,7 +81,7 @@ export default function Browse() {
     if (page === 1) {
       setAllListings(data.listings ?? []);
     } else {
-      setAllListings(prev => [...prev, ...(data.listings ?? [])]);
+      setAllListings((prev) => [...prev, ...(data.listings ?? [])]);
     }
     setHasMore((data.listings?.length ?? 0) === PAGE_SIZE);
   }, [data]);
@@ -94,11 +91,12 @@ export default function Browse() {
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0]?.isIntersecting && hasMore && !isFetching) {
-        setPage(p => p + 1);
-      }
-    }, { rootMargin: "200px" });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && hasMore && !isFetching) setPage((p) => p + 1);
+      },
+      { rootMargin: "200px" },
+    );
     observer.observe(el);
     return () => observer.disconnect();
   }, [hasMore, isFetching]);
@@ -114,7 +112,7 @@ export default function Browse() {
       setQ(transcript);
       setSearch(transcript);
       resetPages();
-    }, [])
+    }, []),
   );
 
   const clearFilter = (key: string) => {
@@ -125,11 +123,15 @@ export default function Browse() {
     resetPages();
   };
 
+  const toggleGroup = (label: string) => {
+    setExpandedGroups((g) => ({ ...g, [label]: !g[label] }));
+  };
+
   const activeFilters = [
     category && { key: "category", label: category },
     condition && { key: "condition", label: condition },
     loc && { key: "location", label: loc },
-    (minPrice || maxPrice) && { key: "price", label: `Rs. ${minPrice || "0"} - ${maxPrice || "∞"}` },
+    (minPrice || maxPrice) && { key: "price", label: `Rs. ${minPrice || "0"} – ${maxPrice || "∞"}` },
   ].filter(Boolean) as { key: string; label: string }[];
 
   const SORT_OPTIONS = [
@@ -142,17 +144,16 @@ export default function Browse() {
   const pageTitle = search
     ? `"${search}" — NEPZIA Search`
     : category
-    ? `${category} for Sale in Nepal | NEPZIA`
+    ? `${category} in Nepal | NEPZIA`
     : t("browse.title");
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content={`Find ${category || "tech products"} for sale in Nepal. ${total} listings available. Filter by condition, location, and price on NEPZIA.`} />
+        <meta name="description" content={`Find ${category || "listings"} in Nepal. ${total} listings available. NEPZIA marketplace.`} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:type" content="website" />
-        <link rel="canonical" href={`https://nepzia.replit.app/browse${category ? `?category=${category}` : ""}`} />
       </Helmet>
 
       {/* Search Header */}
@@ -168,11 +169,8 @@ export default function Browse() {
                 className="pl-12 pr-12 h-12 bg-card border-white/10 text-white placeholder:text-muted-foreground rounded-xl"
               />
               {voiceSupported && (
-                <button
-                  type="button"
-                  onClick={isListening ? stopVoice : startVoice}
-                  className={`absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full transition-all ${isListening ? "text-primary animate-pulse bg-primary/10" : "text-muted-foreground hover:text-white"}`}
-                >
+                <button type="button" onClick={isListening ? stopVoice : startVoice}
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full transition-all ${isListening ? "text-primary animate-pulse bg-primary/10" : "text-muted-foreground hover:text-white"}`}>
                   {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                 </button>
               )}
@@ -209,42 +207,73 @@ export default function Browse() {
         <div className="flex gap-8">
           {/* Sidebar Filters */}
           <aside className={`w-64 flex-shrink-0 ${showFilters ? "block" : "hidden sm:block"}`}>
-            <div className="sticky top-24 space-y-6">
+            <div className="sticky top-24 space-y-4">
               <div className="bg-card border border-white/5 rounded-xl p-5">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <SlidersHorizontal className="h-4 w-4 text-primary" />
                   {t("browse.filters")}
                 </h3>
 
-                <div className="space-y-5">
-                  {/* Category */}
+                <div className="space-y-4">
+                  {/* Categories — grouped */}
                   <div>
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">{t("browse.category")}</label>
-                    <div className="space-y-1.5">
-                      {CATEGORIES.map((cat) => (
-                        <button key={cat} onClick={() => { setCategory(category === cat ? "" : cat); resetPages(); }}
-                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${category === cat ? "bg-primary/20 text-primary font-medium" : "text-muted-foreground hover:bg-white/5 hover:text-white"}`}>
-                          {t(CAT_KEYS[cat] ?? cat)}
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">
+                      {t("browse.category")}
+                    </label>
+
+                    {/* All option */}
+                    <button
+                      onClick={() => { setCategory(""); resetPages(); }}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-sm mb-1 transition-all ${!category ? "bg-primary/20 text-primary font-medium" : "text-muted-foreground hover:bg-white/5 hover:text-white"}`}
+                    >
+                      All Categories
+                    </button>
+
+                    {CATEGORY_GROUPS.map((group) => (
+                      <div key={group.type} className="mb-1">
+                        <button
+                          onClick={() => toggleGroup(group.label)}
+                          className="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider hover:text-muted-foreground transition-colors"
+                        >
+                          <span>{group.emoji} {group.label}</span>
+                          {expandedGroups[group.label]
+                            ? <ChevronDown className="h-3 w-3" />
+                            : <ChevronRight className="h-3 w-3" />}
                         </button>
-                      ))}
-                    </div>
+                        {expandedGroups[group.label] && (
+                          <div className="ml-2 space-y-0.5 mt-0.5">
+                            {group.subcategories.map((sub) => (
+                              <button
+                                key={sub.name}
+                                onClick={() => { setCategory(category === sub.name ? "" : sub.name); resetPages(); }}
+                                className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${category === sub.name ? "bg-primary/20 text-primary font-medium" : "text-muted-foreground hover:bg-white/5 hover:text-white"}`}
+                              >
+                                {sub.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Condition */}
-                  <div className="border-t border-white/5 pt-5">
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">{t("browse.condition")}</label>
-                    <div className="flex flex-wrap gap-2">
-                      {CONDITIONS.map((c) => (
-                        <button key={c} onClick={() => { setCondition(condition === c ? "" : c); resetPages(); }}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${condition === c ? "bg-primary border-primary text-white" : "border-white/10 text-muted-foreground hover:border-white/20 hover:text-white"}`}>
-                          {t(COND_KEYS[c] ?? c)}
-                        </button>
-                      ))}
+                  {/* Condition — only relevant for electronics */}
+                  {(!category || CATEGORY_GROUPS.find((g) => g.type === "electronics")?.subcategories.some((s) => s.name === category)) && (
+                    <div className="border-t border-white/5 pt-4">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">{t("browse.condition")}</label>
+                      <div className="flex flex-wrap gap-2">
+                        {CONDITIONS.map((c) => (
+                          <button key={c} onClick={() => { setCondition(condition === c ? "" : c); resetPages(); }}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${condition === c ? "bg-primary border-primary text-white" : "border-white/10 text-muted-foreground hover:border-white/20 hover:text-white"}`}>
+                            {t(COND_KEYS[c] ?? c)}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Location */}
-                  <div className="border-t border-white/5 pt-5">
+                  <div className="border-t border-white/5 pt-4">
                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">{t("browse.location")}</label>
                     <select value={loc} onChange={(e) => { setLoc(e.target.value); resetPages(); }}
                       className="w-full bg-card border border-white/10 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary">
@@ -254,7 +283,7 @@ export default function Browse() {
                   </div>
 
                   {/* Price */}
-                  <div className="border-t border-white/5 pt-5">
+                  <div className="border-t border-white/5 pt-4">
                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">{t("browse.priceRange")}</label>
                     <div className="flex gap-2">
                       <Input value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder={t("browse.min")}
@@ -307,7 +336,8 @@ export default function Browse() {
                 <div className="text-6xl mb-4">🔍</div>
                 <h3 className="text-xl font-bold text-white mb-2">{t("browse.noListings")}</h3>
                 <p className="text-muted-foreground mb-6">{t("browse.noListingsSub")}</p>
-                <Button onClick={() => { setSearch(""); setQ(""); setCategory(""); setCondition(""); setLoc(""); setMinPrice(""); setMaxPrice(""); resetPages(); }}
+                <Button
+                  onClick={() => { setSearch(""); setQ(""); setCategory(""); setCondition(""); setLoc(""); setMinPrice(""); setMaxPrice(""); resetPages(); }}
                   variant="outline" className="border-white/10 text-white hover:bg-white/5">
                   {t("browse.clearAllFilters")}
                 </Button>
@@ -319,12 +349,10 @@ export default function Browse() {
                     <ListingCard key={listing.id} listing={listing} />
                   ))}
                 </div>
-
-                {/* Infinite scroll sentinel */}
                 <div ref={sentinelRef} className="h-12 flex items-center justify-center mt-6">
                   {isFetching && page > 1 && (
                     <div className="flex gap-1.5">
-                      {[0,1,2].map(i => (
+                      {[0, 1, 2].map((i) => (
                         <div key={i} className="w-2 h-2 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
                       ))}
                     </div>

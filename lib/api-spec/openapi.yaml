@@ -761,6 +761,9 @@ components:
         sellerVerified: { type: boolean }
         sellerRating: { type: ["number", "null"] }
         contactPhone: { type: ["string", "null"] }
+        details:
+          type: ["object", "null"]
+          additionalProperties: true
         createdAt: { type: string }
         updatedAt: { type: ["string", "null"] }
 
@@ -778,7 +781,7 @@ components:
 
     ListingInput:
       type: object
-      required: [title, price, condition, category, location]
+      required: [title, price, category, location]
       properties:
         title: { type: string }
         description: { type: string }
@@ -792,6 +795,9 @@ components:
         contactPhone: { type: string }
         status: { type: string }
         featured: { type: boolean }
+        details:
+          type: object
+          additionalProperties: true
 
     ListingUpdate:
       type: object
@@ -808,6 +814,9 @@ components:
         contactPhone: { type: string }
         status: { type: string }
         featured: { type: boolean }
+        details:
+          type: object
+          additionalProperties: true
 
     ListingStatusUpdate:
       type: object

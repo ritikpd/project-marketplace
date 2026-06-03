@@ -1,0 +1,204 @@
+CRITICAL BUG FIX
+
+The homepage displays multiple marketplace categories:
+
+- Phones
+- Laptops
+- Cars
+- Bikes
+- House Rent
+- Flat Rent
+- Land Sale
+- Jobs
+- Services
+
+But the Create Listing page only shows electronics categories.
+
+FIX THIS COMPLETELY.
+
+================================================
+
+CREATE MASTER CATEGORY SYSTEM
+
+Categories:
+
+Electronics
+  - Phones
+  - Laptops
+  - Tablets
+  - Smart Watches
+  - Cameras
+  - Gaming Consoles
+  - Accessories
+
+Vehicles
+  - Cars
+  - Bikes
+  - Scooters
+  - Electric Vehicles
+
+Property
+  - House Sale
+  - House Rent
+  - Flat Sale
+  - Flat Rent
+  - Land Sale
+  - Commercial Property
+
+Jobs
+  - Full Time
+  - Part Time
+  - Internship
+  - Remote
+
+Services
+  - Repair
+  - Cleaning
+  - Tutor
+  - Freelancer
+
+================================================
+
+DYNAMIC LISTING FORM
+
+When user selects category:
+
+Electronics:
+Show
+- Brand
+- Model
+- Storage
+- RAM
+- Condition
+
+Vehicles:
+Show
+- Brand
+- Year
+- Fuel Type
+- Mileage
+- Ownership
+
+Property:
+Show
+- Bedrooms
+- Bathrooms
+- Area
+- Furnished
+- Parking
+- Property Type
+
+Jobs:
+Show
+- Company Name
+- Salary
+- Experience
+- Location
+
+Services:
+Show
+- Service Type
+- Pricing
+- Availability
+
+================================================
+
+BACKEND REQUIREMENTS
+
+Complete ALL backend.
+
+NO MOCK DATA.
+
+Implement:
+
+✓ User Authentication
+✓ User Registration
+✓ Login
+✓ Logout
+✓ Password Reset
+
+✓ Create Listing
+✓ Edit Listing
+✓ Delete Listing
+
+✓ Upload Multiple Images
+
+✓ User Dashboard
+
+✓ Saved Listings
+
+✓ Search
+
+✓ Category Filters
+
+✓ Location Filters
+
+✓ Price Filters
+
+✓ Messaging System
+
+✓ Seller Profiles
+
+✓ Listing Approval System
+
+✓ Report Listing
+
+✓ Favorite Listings
+
+✓ Recently Viewed Listings
+
+✓ Property Listings
+
+✓ Vehicle Listings
+
+✓ Job Listings
+
+✓ Service Listings
+
+================================================
+
+DATABASE
+
+Create complete production database schema.
+
+Tables:
+
+users
+profiles
+listings
+listing_images
+property_details
+vehicle_details
+job_details
+service_details
+favorites
+messages
+notifications
+reports
+
+Add relationships and indexes.
+
+================================================
+
+ADMIN PANEL
+
+Create Admin Dashboard:
+
+- Total Users
+- Total Listings
+- Pending Listings
+- Reported Listings
+- Delete Listing
+- Ban User
+- Approve Listing
+
+================================================
+
+IMPORTANT
+
+Do not leave placeholders.
+Do not leave TODO comments.
+Do not use fake data.
+
+Everything must be fully connected and functional.
+Generate production-ready code.

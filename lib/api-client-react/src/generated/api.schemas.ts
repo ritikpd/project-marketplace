@@ -9,6 +9,11 @@ export interface HealthStatus {
   status: string;
 }
 
+/**
+ * @nullable
+ */
+export type ListingDetails = { [key: string]: unknown } | null;
+
 export interface Listing {
   id: number;
   title: string;
@@ -37,6 +42,8 @@ export interface Listing {
   sellerRating?: number | null;
   /** @nullable */
   contactPhone?: string | null;
+  /** @nullable */
+  details?: ListingDetails;
   createdAt: string;
   /** @nullable */
   updatedAt?: string | null;
@@ -49,11 +56,13 @@ export interface ListingsPage {
   limit: number;
 }
 
+export type ListingInputDetails = { [key: string]: unknown };
+
 export interface ListingInput {
   title: string;
   description?: string;
   price: number;
-  condition: string;
+  condition?: string;
   category: string;
   location: string;
   latitude?: number;
@@ -62,7 +71,10 @@ export interface ListingInput {
   contactPhone?: string;
   status?: string;
   featured?: boolean;
+  details?: ListingInputDetails;
 }
+
+export type ListingUpdateDetails = { [key: string]: unknown };
 
 export interface ListingUpdate {
   title?: string;
@@ -77,6 +89,7 @@ export interface ListingUpdate {
   contactPhone?: string;
   status?: string;
   featured?: boolean;
+  details?: ListingUpdateDetails;
 }
 
 export interface ListingStatusUpdate {

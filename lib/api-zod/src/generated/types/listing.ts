@@ -5,6 +5,7 @@
  * NEPZIA Marketplace API
  * OpenAPI spec version: 0.1.0
  */
+import type { ListingDetails } from './listingDetails';
 
 export interface Listing {
   id: number;
@@ -34,6 +35,8 @@ export interface Listing {
   sellerRating?: number | null;
   /** @nullable */
   contactPhone?: string | null;
+  /** @nullable */
+  details?: ListingDetails;
   createdAt: string;
   /** @nullable */
   updatedAt?: string | null;

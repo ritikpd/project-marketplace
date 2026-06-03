@@ -5,12 +5,13 @@
  * NEPZIA Marketplace API
  * OpenAPI spec version: 0.1.0
  */
+import type { ListingInputDetails } from './listingInputDetails';
 
 export interface ListingInput {
   title: string;
   description?: string;
   price: number;
-  condition: string;
+  condition?: string;
   category: string;
   location: string;
   latitude?: number;
@@ -19,4 +20,5 @@ export interface ListingInput {
   contactPhone?: string;
   status?: string;
   featured?: boolean;
+  details?: ListingInputDetails;
 }

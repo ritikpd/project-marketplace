@@ -5,6 +5,7 @@
  * NEPZIA Marketplace API
  * OpenAPI spec version: 0.1.0
  */
+import type { ListingUpdateDetails } from './listingUpdateDetails';
 
 export interface ListingUpdate {
   title?: string;
@@ -19,4 +20,5 @@ export interface ListingUpdate {
   contactPhone?: string;
   status?: string;
   featured?: boolean;
+  details?: ListingUpdateDetails;
 }
