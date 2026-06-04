@@ -96,7 +96,7 @@ export default function Home() {
         <title>NEPZIA — Buy. Sell. Rent. Everything In Nepal.</title>
         <meta name="description" content="Nepal's #1 marketplace for electronics, vehicles, property, and rentals. Verified sellers across Kathmandu, Pokhara and 75+ cities." />
         <meta property="og:title" content="NEPZIA — Nepal's #1 Marketplace" />
-        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:image" content="/opengraph.jpg" />
       </Helmet>
 
       {/* Announcement Bar */}

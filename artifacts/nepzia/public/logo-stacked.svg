@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" fill="none">
+  <defs>
+    <linearGradient id="ng" x1="78" y1="0" x2="322" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0273A"/>
+      <stop offset="1" stop-color="#BF1878"/>
+    </linearGradient>
+    <linearGradient id="tg" x1="80" y1="0" x2="320" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0273A"/>
+      <stop offset="1" stop-color="#BF1878"/>
+    </linearGradient>
+  </defs>
+
+  <!-- N body -->
+  <path d="M78,300 L78,105 L135,105 L265,260 L265,105 L322,105 L322,300 L265,300 L135,147 L135,300 Z" fill="url(#ng)"/>
+
+  <!-- Himalayan triple-peak (white) -->
+  <path d="M65,125 L88,90 L122,48 L160,80 L200,16 L240,80 L278,52 L312,90 L335,125 L335,105 L65,105 Z" fill="#FFFFFF"/>
+
+  <!-- NEPZIA wordmark -->
+  <text x="200" y="360"
+    font-family="'Helvetica Neue','Arial Black',Arial,sans-serif"
+    font-weight="800" font-size="42" letter-spacing="12"
+    fill="white" text-anchor="middle">NEPZIA</text>
+
+  <!-- Red upward triangle accent (after A) -->
+  <polygon points="317,358 312,372 322,372" fill="#E0273A"/>
+
+  <!-- Two small red horizontal dashes (before P–Z) -->
+  <rect x="166" y="366" width="16" height="2.5" rx="1.2" fill="#E0273A"/>
+  <rect x="166" y="372" width="16" height="2.5" rx="1.2" fill="#BF1878"/>
+
+  <!-- Gradient rule -->
+  <rect x="82" y="388" width="236" height="2" rx="1" fill="url(#tg)"/>
+</svg>

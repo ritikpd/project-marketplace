@@ -1,3 +1,17 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="fig" x1="10" y1="0" x2="190" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0273A"/>
+      <stop offset="1" stop-color="#BF1878"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background (dark, for favicon readability) -->
+  <rect width="200" height="200" rx="32" fill="#0C0C0E"/>
+
+  <!-- N body -->
+  <path d="M18,176 L18,82 L52,82 L148,156 L148,82 L182,82 L182,176 L148,176 L52,106 L52,176 Z" fill="url(#fig)"/>
+
+  <!-- Mountain peaks (white) -->
+  <path d="M10,98 L26,72 L54,36 L80,62 L100,10 L120,62 L146,40 L174,72 L190,98 L190,82 L10,82 Z" fill="white"/>
 </svg>

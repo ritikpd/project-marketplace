@@ -1,18 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" fill="none">
   <defs>
-    <linearGradient id="mg" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#e81c44"/>
-      <stop offset="100%" stop-color="#ff6b9d"/>
+    <linearGradient id="ng" x1="2" y1="0" x2="46" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0273A"/>
+      <stop offset="1" stop-color="#BF1878"/>
     </linearGradient>
   </defs>
-  <!-- Left small peak -->
-  <path d="M2 50 L15 24 L28 50Z" fill="#e81c44" opacity="0.45"/>
-  <!-- Main center peak -->
-  <path d="M13 50 L33 5 L53 50Z" fill="url(#mg)"/>
-  <!-- Snow cap -->
-  <path d="M29 13 L33 5 L37 13Z" fill="white" opacity="0.92"/>
-  <!-- Right accent peak -->
-  <path d="M37 50 L52 26 L67 50Z" fill="#e81c44" opacity="0.28"/>
+
+  <!-- N body (geometric) -->
+  <path d="M2,52 L2,18 L12,18 L36,44 L36,18 L46,18 L46,52 L36,52 L12,26 L12,52 Z" fill="url(#ng)"/>
+
+  <!-- Himalayan triple-peak (white) -->
+  <path d="M0,20 L4,14 L14,7 L19,12 L24,4 L29,12 L34,7 L44,14 L48,20 L48,18 L0,18 Z" fill="white"/>
+
   <!-- NEPZIA wordmark -->
-  <text x="79" y="39" font-family="Inter,system-ui,-apple-system,sans-serif" font-weight="900" font-size="28" letter-spacing="0.5" fill="white">NEP<tspan fill="#e81c44">Z</tspan>IA</text>
+  <text x="59" y="38"
+    font-family="'Helvetica Neue','Arial Black',Arial,sans-serif"
+    font-weight="800" font-size="27" letter-spacing="4"
+    fill="white" text-anchor="start">NEPZIA</text>
 </svg>
