@@ -58,7 +58,7 @@ export default function Browse() {
   const [hasMore, setHasMore] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    Electronics: true, Vehicles: true, Property: true, Jobs: true, Services: true,
+    Electronics: true, Vehicles: true, Property: true,
   });
   const sentinelRef = useRef<HTMLDivElement>(null);
 

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useLocation } from "wouter";
 import {
   Search, MapPin, Navigation, ArrowRight, MonitorSmartphone, Laptop,
-  Car, Bike, Home as HomeIcon, Building2, Briefcase, Wrench,
+  Car, Bike, Home as HomeIcon, Building2,
   Gamepad2, TrendingUp, ShieldCheck, UserCheck,
   MessageCircle, AlertOctagon, MapPinned, Zap, Smartphone,
 } from "lucide-react";
@@ -31,8 +31,6 @@ const SEARCH_TABS = [
   { key: "tabs.vehicles", emoji: "🚗", category: "cars" },
   { key: "tabs.property", emoji: "🏠", category: "flat-rent" },
   { key: "tabs.rentals", emoji: "🔑", category: "house-rent" },
-  { key: "tabs.jobs", emoji: "💼", category: "jobs" },
-  { key: "tabs.services", emoji: "🛠", category: "services" },
 ];
 
 const ALL_CATEGORIES = [
@@ -44,8 +42,6 @@ const ALL_CATEGORIES = [
   { icon: Building2, key: "categories.flatRent", slug: "flat-rent", bg: "bg-teal-500/10", border: "border-teal-500/20 hover:border-teal-500/50", color: "text-teal-400", glow: "group-hover:shadow-teal-500/20" },
   { icon: TrendingUp, key: "categories.landSale", slug: "land-sale", bg: "bg-yellow-500/10", border: "border-yellow-500/20 hover:border-yellow-500/50", color: "text-yellow-400", glow: "group-hover:shadow-yellow-500/20" },
   { icon: Gamepad2, key: "categories.gaming", slug: "gaming-consoles", bg: "bg-indigo-500/10", border: "border-indigo-500/20 hover:border-indigo-500/50", color: "text-indigo-400", glow: "group-hover:shadow-indigo-500/20" },
-  { icon: Briefcase, key: "categories.jobs", slug: "jobs", bg: "bg-red-500/10", border: "border-red-500/20 hover:border-red-500/50", color: "text-red-400", glow: "group-hover:shadow-red-500/20" },
-  { icon: Wrench, key: "categories.services", slug: "services", bg: "bg-slate-500/10", border: "border-slate-500/20 hover:border-slate-500/50", color: "text-slate-400", glow: "group-hover:shadow-slate-500/20" },
 ];
 
 const TRUST_ITEMS = [
