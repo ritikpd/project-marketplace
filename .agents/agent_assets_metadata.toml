@@ -1,0 +1,26 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "ZE60sJkIpZ5jmaxn91qdg"
+uri = "file://artifacts/nepzia/public/logo-v1.svg"
+type = "image"
+title = "V1 — Classic Summit (bold N, 3-peak, horizontal red→pink gradient)"
+
+[[outputs]]
+id = "y87bhOQEXOjUtlD3tw0GI"
+uri = "file://artifacts/nepzia/public/logo-v2.svg"
+type = "image"
+title = "V2 — Apex (diagonal red→purple gradient, sharper peaks, Z in red)"
+
+[[outputs]]
+id = "mIaWp37u7WuSQ2A2z2HwE"
+uri = "file://artifacts/nepzia/public/logo-v3.svg"
+type = "image"
+title = "V3 — Ridge (5-peak Himalayan range, shine overlay, ultra-wide tracking)"
+
+[[outputs]]
+id = "b4NI1L59ahf6gnYigS8Zp"
+uri = "file://artifacts/nepzia/public/logo-icon.svg"
+type = "image"
+title = "Icon — App icon / Favicon (1:1, N+mountains only, rounded bg)"
