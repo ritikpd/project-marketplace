@@ -1,4 +1,4 @@
-export type CategoryType = "electronics" | "vehicles" | "property" | "jobs" | "services";
+export type CategoryType = "electronics" | "vehicles" | "property";
 
 export interface SubCategory {
   name: string;
@@ -51,28 +51,6 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
       { name: "Commercial Property", slug: "commercial-property" },
     ],
   },
-  {
-    type: "jobs",
-    label: "Jobs",
-    emoji: "💼",
-    subcategories: [
-      { name: "Full Time", slug: "full-time" },
-      { name: "Part Time", slug: "part-time" },
-      { name: "Internship", slug: "internship" },
-      { name: "Remote", slug: "remote" },
-    ],
-  },
-  {
-    type: "services",
-    label: "Services",
-    emoji: "🛠",
-    subcategories: [
-      { name: "Repair", slug: "repair" },
-      { name: "Cleaning", slug: "cleaning" },
-      { name: "Tutor", slug: "tutor" },
-      { name: "Freelancer", slug: "freelancer" },
-    ],
-  },
 ];
 
 export const ALL_FLAT_CATEGORIES = CATEGORY_GROUPS.flatMap((g) =>
@@ -117,4 +95,3 @@ export const VEHICLE_YEARS = Array.from({ length: 30 }, (_, i) => String(new Dat
 export const BEDROOM_OPTIONS = ["Studio", "1", "2", "3", "4", "5", "6+"];
 export const BATHROOM_OPTIONS = ["1", "2", "3", "4", "5+"];
 export const FURNISHED_OPTIONS = ["Fully Furnished", "Semi-Furnished", "Unfurnished"];
-export const EXPERIENCE_OPTIONS = ["Fresher", "1-2 years", "2-5 years", "5-10 years", "10+ years"];

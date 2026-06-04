@@ -25,16 +25,6 @@ const CATEGORIES = [
   { id: 15, name: "Flat Rent",           slug: "flat-rent",            icon: "building-2",   group: "Property" },
   { id: 16, name: "Land Sale",           slug: "land-sale",            icon: "trending-up",  group: "Property" },
   { id: 17, name: "Commercial Property", slug: "commercial-property",  icon: "store",        group: "Property" },
-  // Jobs
-  { id: 18, name: "Full Time",           slug: "full-time",            icon: "briefcase",    group: "Jobs" },
-  { id: 19, name: "Part Time",           slug: "part-time",            icon: "briefcase",    group: "Jobs" },
-  { id: 20, name: "Internship",          slug: "internship",           icon: "book-open",    group: "Jobs" },
-  { id: 21, name: "Remote",             slug: "remote",               icon: "laptop",       group: "Jobs" },
-  // Services
-  { id: 22, name: "Repair",             slug: "repair",               icon: "wrench",       group: "Services" },
-  { id: 23, name: "Cleaning",           slug: "cleaning",             icon: "sparkles",     group: "Services" },
-  { id: 24, name: "Tutor",              slug: "tutor",                icon: "book-open",    group: "Services" },
-  { id: 25, name: "Freelancer",         slug: "freelancer",           icon: "code",         group: "Services" },
 ];
 
 // GET /categories

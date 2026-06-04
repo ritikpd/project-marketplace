@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import {
   DollarSign, Tag, MapPin, Phone, AlignLeft, Type, Info,
-  Cpu, Car, Home, Briefcase, Wrench,
+  Cpu, Car, Home,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,23 +14,19 @@ import {
   CATEGORY_GROUPS, CONDITIONS, CITIES, getCategoryType,
   STORAGE_OPTIONS, RAM_OPTIONS, FUEL_TYPES, OWNERSHIP_OPTIONS,
   VEHICLE_YEARS, BEDROOM_OPTIONS, BATHROOM_OPTIONS, FURNISHED_OPTIONS,
-  EXPERIENCE_OPTIONS, type CategoryType,
+  type CategoryType,
 } from "@/lib/categories";
 
 const TYPE_ICONS: Record<CategoryType, typeof Cpu> = {
   electronics: Cpu,
   vehicles: Car,
   property: Home,
-  jobs: Briefcase,
-  services: Wrench,
 };
 
 const TYPE_LABELS: Record<CategoryType, string> = {
   electronics: "Device Details",
   vehicles: "Vehicle Details",
   property: "Property Details",
-  jobs: "Job Details",
-  services: "Service Details",
 };
 
 const selectClass = "w-full bg-background border border-white/10 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-primary h-10";
@@ -97,8 +93,6 @@ export default function CreateListing() {
     electronics: t("create.titlePlaceholder"),
     vehicles: "e.g. Toyota Prado 2019 White, Good Condition",
     property: "e.g. 3BHK Apartment in Kathmandu near Ring Road",
-    jobs: "e.g. Senior Software Developer at ABC Company",
-    services: "e.g. Professional Mobile Phone & Laptop Repair",
   };
 
   return (
@@ -328,51 +322,6 @@ export default function CreateListing() {
                 </div>
               )}
 
-              {catType === "jobs" && (
-                <div className="space-y-4">
-                  <div>
-                    <FieldLabel>Company Name</FieldLabel>
-                    <Input value={details.company ?? ""} onChange={(e) => setD("company", e.target.value)}
-                      placeholder="e.g. ABC Technologies Pvt. Ltd." className={inputClass} />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <FieldLabel>Salary</FieldLabel>
-                      <Input value={details.salary ?? ""} onChange={(e) => setD("salary", e.target.value)}
-                        placeholder="e.g. Rs. 25,000 - 35,000" className={inputClass} />
-                    </div>
-                    <div>
-                      <FieldLabel>Experience Required</FieldLabel>
-                      <select value={details.experience ?? ""} onChange={(e) => setD("experience", e.target.value)} className={selectClass}>
-                        <option value="">Select experience</option>
-                        {EXPERIENCE_OPTIONS.map((e) => <option key={e} value={e}>{e}</option>)}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {catType === "services" && (
-                <div className="space-y-4">
-                  <div>
-                    <FieldLabel>Service Type</FieldLabel>
-                    <Input value={details.serviceType ?? ""} onChange={(e) => setD("serviceType", e.target.value)}
-                      placeholder="e.g. Mobile Phone Repair, Home Cleaning" className={inputClass} />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <FieldLabel>Pricing</FieldLabel>
-                      <Input value={details.pricing ?? ""} onChange={(e) => setD("pricing", e.target.value)}
-                        placeholder="e.g. Rs. 500/hour" className={inputClass} />
-                    </div>
-                    <div>
-                      <FieldLabel>Availability</FieldLabel>
-                      <Input value={details.availability ?? ""} onChange={(e) => setD("availability", e.target.value)}
-                        placeholder="e.g. Mon–Fri, 9am–6pm" className={inputClass} />
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           )}
 
