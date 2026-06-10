@@ -24,19 +24,24 @@ const RATE_LIMIT_MAX_REQUESTS = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. SECURITY HEADERS (Helmet)
 // ─────────────────────────────────────────────────────────────────────────────
+// BEFORE: upgradeInsecureRequests: undefined/false — both crash Helmet 7 which only
+//         accepts [] (enable) and does not accept false or undefined.
+// AFTER:  conditionally spread the key so it is only present in production.
+const cspDirectives = {
+  defaultSrc: ["'self'"],
+  scriptSrc: ["'self'"],
+  styleSrc: ["'self'", "'unsafe-inline'"],
+  imgSrc: ["'self'", "data:", "https:"],
+  connectSrc: ["'self'", ...ALLOWED_ORIGINS],
+  fontSrc: ["'self'"],
+  objectSrc: ["'none'"],
+  ...(NODE_ENV === "production" ? { upgradeInsecureRequests: [] as string[] } : {}),
+};
+
 app.use(
   helmet({
     contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'", ...ALLOWED_ORIGINS],
-        fontSrc: ["'self'"],
-        objectSrc: ["'none'"],
-        upgradeInsecureRequests: NODE_ENV === "production" ? [] : undefined,
-      },
+      directives: cspDirectives,
     },
     crossOriginEmbedderPolicy: false, // Allow cross-origin resources if needed
     crossOriginOpenerPolicy: { policy: "same-origin" },

@@ -1,2 +1,3 @@
 - [NEPZIA setup](nepzia-setup.md) — full NEPZIA marketplace bootstrap steps and gotchas for future sessions
 - [Object Storage Setup](object-storage-setup.md) — presigned URL flow, image serving convention, ImageUploader prop shape, no-Uppy decision
+- [NEPZIA Critical Fixes](nepzia-critical-fixes.md) — Helmet 7 CSP quirk, sql.raw→inArray pattern, N+1 batch patterns, schema index syntax

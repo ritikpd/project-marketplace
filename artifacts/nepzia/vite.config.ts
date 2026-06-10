@@ -57,6 +57,34 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // BEFORE: no chunking strategy — all vendor code and pages bundled into a single large JS file.
+    // AFTER:  manual chunks split vendor libs (react, clerk, radix, leaflet, framer-motion) into
+    //         separate cacheable chunks. Pages are already split via React.lazy() in App.tsx.
+    //         This prevents re-downloading unchanged vendor code on every app update.
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom"],
+          "vendor-clerk": ["@clerk/react"],
+          "vendor-query": ["@tanstack/react-query"],
+          "vendor-radix": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-select",
+            "@radix-ui/react-tooltip",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-label",
+            "@radix-ui/react-separator",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-switch",
+            "@radix-ui/react-toast",
+          ],
+          "vendor-motion": ["framer-motion"],
+          "vendor-map": ["leaflet", "react-leaflet"],
+          "vendor-icons": ["lucide-react"],
+        },
+      },
+    },
   },
   server: {
     port,

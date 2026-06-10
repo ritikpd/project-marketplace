@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq, ilike, and, gte, lte, desc, asc, sql } from "drizzle-orm";
+import { eq, ilike, and, gte, lte, desc, asc, sql, inArray } from "drizzle-orm";
 import { db, listingsTable, usersTable, wishlistTable } from "@workspace/db";
 import {
   CreateListingBody,
@@ -22,13 +22,13 @@ import { reportsTable } from "@workspace/db";
 
 const router: IRouter = Router();
 
+// BEFORE: used sql.raw with manual string escaping — vulnerable to SQL injection if input changes.
+// AFTER:  uses Drizzle's inArray() which generates safe parameterized queries.
 async function enrichListings(listings: any[], currentUserId?: string | null) {
   const sellerIds = [...new Set(listings.map((l) => l.sellerId))];
   let sellers: any[] = [];
   if (sellerIds.length > 0) {
-    sellers = await db.select().from(usersTable).where(
-      sql`${usersTable.clerkId} = ANY(${sql.raw(`ARRAY[${sellerIds.map((id) => `'${id.replace(/'/g, "''")}'`).join(",")}]::text[]`)})`,
-    );
+    sellers = await db.select().from(usersTable).where(inArray(usersTable.clerkId, sellerIds));
   }
   const sellerMap = new Map(sellers.map((s) => [s.clerkId, s]));
   return listings.map((l) => {
@@ -115,19 +115,24 @@ router.get("/listings/featured", async (req, res): Promise<void> => {
 });
 
 // GET /listings/nearby
+// BEFORE: used sql.raw with manual city-name escaping — fragile and injection-prone.
+// AFTER:  uses inArray() with a validated, safe city list derived from a hardcoded map.
+// BEFORE: used parseFloat/parseInt without NaN guards — could cause silent bad queries.
+// AFTER:  validates lat/lng/radius/limit with explicit isNaN and range checks.
 router.get("/listings/nearby", async (req, res): Promise<void> => {
   const lat = parseFloat(req.query.lat as string);
   const lng = parseFloat(req.query.lng as string);
-  const radius = parseFloat(req.query.radius as string) || 50;
-  const lim = parseInt(req.query.limit as string) || 12;
+  const rawRadius = parseFloat(req.query.radius as string);
+  const rawLimit = parseInt(req.query.limit as string, 10);
 
-  if (isNaN(lat) || isNaN(lng)) {
-    res.status(400).json({ error: "lat and lng are required" });
+  if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+    res.status(400).json({ error: "lat and lng are required and must be valid coordinates" });
     return;
   }
 
-  // Haversine distance in km using approximate city coords
-  // Returns all active listings whose location city is within radius km
+  const radius = isNaN(rawRadius) || rawRadius <= 0 ? 50 : Math.min(rawRadius, 500);
+  const lim = isNaN(rawLimit) || rawLimit <= 0 ? 12 : Math.min(rawLimit, 50);
+
   const CITY_COORDS: Record<string, [number, number]> = {
     "Kathmandu": [27.7172, 85.3240],
     "Lalitpur": [27.6588, 85.3247],
@@ -161,7 +166,7 @@ router.get("/listings/nearby", async (req, res): Promise<void> => {
   const rows = await db.select().from(listingsTable)
     .where(and(
       eq(listingsTable.status, "active"),
-      sql`${listingsTable.location} = ANY(${sql.raw(`ARRAY[${nearbyCities.map(c => `'${c.replace(/'/g, "''")}'`).join(",")}]::text[]`)})`
+      inArray(listingsTable.location, nearbyCities),
     ))
     .orderBy(desc(listingsTable.createdAt))
     .limit(lim);

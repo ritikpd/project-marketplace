@@ -1,0 +1,135 @@
+You are a Senior Staff Engineer, Security Engineer, UI/UX Designer, Product Manager, DevOps Engineer and Marketplace Architect.
+
+Analyze the ENTIRE repository and create a production-readiness audit.
+
+IMPORTANT:
+
+* Use actual repository files only.
+* Do not make assumptions.
+* Show exact file paths.
+* Show evidence from code.
+* Prioritize fixes by impact.
+
+Audit the following:
+
+1. UI/UX
+
+* Homepage
+* Navigation
+* Hero section
+* Typography
+* Mobile responsiveness
+* Accessibility
+* User journeys
+* Empty states
+* Error states
+* Loading states
+
+2. Branding
+
+* NEPZIA logo usage
+* Remove fake trust signals
+* Remove unnecessary sections
+* Remove "Get The NEPZIA App" if app is not available
+* Improve marketplace identity
+
+3. Marketplace Features
+
+* Buyer flow
+* Seller flow
+* Search
+* Filters
+* Categories
+* Wishlist
+* Offers
+* Messaging
+* Notifications
+* Admin moderation
+
+4. Missing Features Compared To:
+
+* OLX
+* Facebook Marketplace
+* Hamrobazar
+
+5. Security Audit
+
+* Authentication
+* Authorization
+* Input validation
+* SQL injection
+* XSS
+* CSRF
+* Rate limiting
+* File uploads
+* Storage security
+* Admin security
+
+6. Performance Audit
+
+* Slow pages
+* Large bundles
+* N+1 queries
+* Database optimization
+* Caching
+* Image optimization
+* Code splitting
+
+7. Database Audit
+
+* Missing indexes
+* Bad schema design
+* Missing constraints
+* Missing audit logs
+* Missing analytics
+
+8. SEO Audit
+
+* Metadata
+* Structured data
+* Sitemap
+* Robots.txt
+* OpenGraph
+* Canonical URLs
+
+9. Code Quality Audit
+
+* Dead code
+* Duplicate code
+* Unused files
+* Bad patterns
+* Refactoring opportunities
+
+10. Production Readiness
+
+* Monitoring
+* Logging
+* Error tracking
+* Backups
+* Deployment
+* Environment variables
+
+OUTPUT FORMAT:
+
+PHASE 1 – CRITICAL
+List all blockers.
+
+PHASE 2 – HIGH PRIORITY
+List all improvements.
+
+PHASE 3 – MEDIUM PRIORITY
+List enhancements.
+
+PHASE 4 – LOW PRIORITY
+Future roadmap.
+
+Then generate:
+
+1. Exact implementation roadmap.
+2. Estimated completion percentage.
+3. Top 50 files that require changes.
+4. Missing features list.
+5. Launch readiness score out of 100.
+
+Do not modify code yet.
+Only perform a complete repository audit.

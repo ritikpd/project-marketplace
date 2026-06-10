@@ -90,13 +90,34 @@ export default function Home() {
     setLocation(`/browse?${params.toString()}`);
   };
 
+  // BEFORE: missing og:description, og:url, og:type, twitter:card, canonical — search engines
+  //         and social share previews fall back to guessing content with poor results.
+  // AFTER:  complete Open Graph + Twitter Card + canonical tag using window.location.origin
+  //         so the correct domain is used in every environment (dev, staging, prod).
+  const siteOrigin = typeof window !== "undefined" ? window.location.origin : "https://nepzia.replit.app";
+  const homeDesc = "Nepal's #1 marketplace for electronics, vehicles, property, and rentals. Verified sellers across Kathmandu, Pokhara and 75+ cities.";
+
   return (
     <div>
       <Helmet>
         <title>NEPZIA — Buy. Sell. Rent. Everything In Nepal.</title>
-        <meta name="description" content="Nepal's #1 marketplace for electronics, vehicles, property, and rentals. Verified sellers across Kathmandu, Pokhara and 75+ cities." />
+        <meta name="description" content={homeDesc} />
+        <link rel="canonical" href={siteOrigin} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="NEPZIA" />
         <meta property="og:title" content="NEPZIA — Nepal's #1 Marketplace" />
-        <meta property="og:image" content="/opengraph.jpg" />
+        <meta property="og:description" content={homeDesc} />
+        <meta property="og:image" content={`${siteOrigin}/opengraph.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content={siteOrigin} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@nepzia" />
+        <meta name="twitter:title" content="NEPZIA — Nepal's #1 Marketplace" />
+        <meta name="twitter:description" content={homeDesc} />
+        <meta name="twitter:image" content={`${siteOrigin}/opengraph.jpg`} />
       </Helmet>
 
       {/* Announcement Bar */}

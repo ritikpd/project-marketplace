@@ -118,21 +118,54 @@ export default function ListingDetail() {
   const ogImage = images?.[0] ?? "";
   const ogDesc = `${listing.title} — ${listing.condition} condition, Rs. ${listing.price?.toLocaleString()} in ${listing.location}, Nepal. Listed on NEPZIA.`;
 
+  // BEFORE: hardcoded `nepzia.replit.app` domain — canonical and og:url point to the wrong
+  //         host in every non-production environment, causing duplicate-content penalties.
+  // AFTER:  window.location.origin ensures the correct domain in dev, staging, and prod.
+  //         Added JSON-LD Product structured data so Google can show rich results
+  //         (price, availability, condition) directly in search listings.
+  const siteOrigin = typeof window !== "undefined" ? window.location.origin : "https://nepzia.replit.app";
+  const canonicalUrl = `${siteOrigin}/listings/${id}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: listing.title,
+    description: ogDesc,
+    image: images,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "NPR",
+      price: listing.price,
+      availability: listing.status === "active"
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      itemCondition: listing.condition === "Brand New" || listing.condition === "New"
+        ? "https://schema.org/NewCondition"
+        : "https://schema.org/UsedCondition",
+      url: canonicalUrl,
+      seller: { "@type": "Person", name: listing.sellerName ?? "NEPZIA Seller" },
+    },
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>{listing.title} — Rs. {listing.price?.toLocaleString()} | NEPZIA</title>
         <meta name="description" content={ogDesc} />
+        <link rel="canonical" href={canonicalUrl} />
+
+        <meta property="og:type" content="product" />
+        <meta property="og:site_name" content="NEPZIA" />
         <meta property="og:title" content={`${listing.title} | NEPZIA`} />
         <meta property="og:description" content={ogDesc} />
         <meta property="og:image" content={ogImage} />
-        <meta property="og:type" content="product" />
-        <meta property="og:url" content={`https://nepzia.replit.app/listings/${id}`} />
+        <meta property="og:url" content={canonicalUrl} />
+
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={listing.title} />
         <meta name="twitter:description" content={ogDesc} />
         <meta name="twitter:image" content={ogImage} />
-        <link rel="canonical" href={`https://nepzia.replit.app/listings/${id}`} />
+
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
       <div className="container mx-auto px-4 py-8 max-w-6xl">

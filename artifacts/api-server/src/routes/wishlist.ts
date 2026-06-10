@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq, and } from "drizzle-orm";
+import { eq, and, inArray } from "drizzle-orm";
 import { db, wishlistTable, listingsTable, usersTable } from "@workspace/db";
 import { AddToWishlistParams, RemoveFromWishlistParams } from "@workspace/api-zod";
 import { requireAuth } from "../middlewares/requireAuth";
@@ -7,30 +7,22 @@ import { requireAuth } from "../middlewares/requireAuth";
 const router: IRouter = Router();
 
 // GET /wishlist
+// BEFORE: two sequential for-of loops issuing 1 DB query per listing and 1 per seller — O(2N) queries.
+// AFTER:  two inArray batch queries — always exactly 2 queries regardless of wishlist size.
 router.get("/wishlist", requireAuth, async (req, res): Promise<void> => {
   const clerkUserId = (req as any).clerkUserId;
+
   const items = await db.select().from(wishlistTable).where(eq(wishlistTable.userId, clerkUserId));
   if (items.length === 0) {
     res.json([]);
     return;
   }
-  const listingIds = items.map((i) => i.listingId);
-  const listings = await db.select().from(listingsTable)
-    .where(eq(listingsTable.id, listingIds[0]));
 
-  // Get all listings
-  const allListings: any[] = [];
-  for (const id of listingIds) {
-    const [l] = await db.select().from(listingsTable).where(eq(listingsTable.id, id));
-    if (l) allListings.push(l);
-  }
+  const listingIds = items.map((i) => i.listingId);
+  const allListings = await db.select().from(listingsTable).where(inArray(listingsTable.id, listingIds));
 
   const sellerIds = [...new Set(allListings.map((l) => l.sellerId))];
-  const sellers: any[] = [];
-  for (const sid of sellerIds) {
-    const [s] = await db.select().from(usersTable).where(eq(usersTable.clerkId, sid));
-    if (s) sellers.push(s);
-  }
+  const sellers = await db.select().from(usersTable).where(inArray(usersTable.clerkId, sellerIds));
   const sellerMap = new Map(sellers.map((s) => [s.clerkId, s]));
 
   const enriched = allListings.map((l) => {
@@ -45,6 +37,7 @@ router.get("/wishlist", requireAuth, async (req, res): Promise<void> => {
       updatedAt: l.updatedAt?.toISOString?.() ?? l.updatedAt ?? null,
     };
   });
+
   res.json(enriched);
 });
 

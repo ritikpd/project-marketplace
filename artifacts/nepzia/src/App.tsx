@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk } from '@clerk/react';
@@ -11,18 +11,23 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import AppLayout from "./components/layout/AppLayout";
-import Home from "./pages/Home";
-import Browse from "./pages/Browse";
-import ListingDetail from "./pages/ListingDetail";
-import CreateListing from "./pages/CreateListing";
-import EditListing from "./pages/EditListing";
-import Dashboard from "./pages/Dashboard";
-import Messages from "./pages/Messages";
-import Wishlist from "./pages/Wishlist";
-import Settings from "./pages/Settings";
-import SellerProfile from "./pages/SellerProfile";
-import AdminPanel from "./pages/AdminPanel";
-import NotFound from "./pages/not-found";
+
+// BEFORE: static imports — every page is bundled into a single JS chunk, forcing the browser
+//         to download and parse the entire application on first load (~AdminPanel, Dashboard, etc.).
+// AFTER:  React.lazy() + Suspense — each page becomes its own async chunk; only the code needed
+//         for the current route is downloaded, reducing initial bundle size significantly.
+const Home = lazy(() => import("./pages/Home"));
+const Browse = lazy(() => import("./pages/Browse"));
+const ListingDetail = lazy(() => import("./pages/ListingDetail"));
+const CreateListing = lazy(() => import("./pages/CreateListing"));
+const EditListing = lazy(() => import("./pages/EditListing"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Messages = lazy(() => import("./pages/Messages"));
+const Wishlist = lazy(() => import("./pages/Wishlist"));
+const Settings = lazy(() => import("./pages/Settings"));
+const SellerProfile = lazy(() => import("./pages/SellerProfile"));
+const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+const NotFound = lazy(() => import("./pages/not-found"));
 
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
@@ -52,11 +57,11 @@ const clerkAppearance = {
     logoImageUrl: `${window.location.origin}${basePath}/logo.svg`,
   },
   variables: {
-    colorPrimary: "hsl(348 83% 53%)", // Crimson Red
+    colorPrimary: "hsl(348 83% 53%)",
     colorForeground: "hsl(0 0% 100%)",
     colorMutedForeground: "hsl(215 20.2% 65.1%)",
     colorDanger: "hsl(0 84.2% 60.2%)",
-    colorBackground: "hsl(226 47% 8%)", // Deep Blue
+    colorBackground: "hsl(226 47% 8%)",
     colorInput: "hsl(226 30% 16%)",
     colorInputForeground: "hsl(0 0% 100%)",
     colorNeutral: "hsl(226 30% 18%)",
@@ -91,6 +96,14 @@ const clerkAppearance = {
     main: "mt-4",
   },
 };
+
+function PageLoader() {
+  return (
+    <div className="flex min-h-[50vh] items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+    </div>
+  );
+}
 
 function SignInPage() {
   return (
@@ -192,50 +205,52 @@ function ClerkProviderWithRoutes() {
       <QueryClientProvider client={queryClient}>
         <ClerkQueryClientCacheInvalidator />
         <TooltipProvider>
-          <Switch>
-            <Route path="/sign-in/*?" component={SignInPage} />
-            <Route path="/sign-up/*?" component={SignUpPage} />
-            
-            <Route path="/">
-              <AppLayout><HomeRedirect /></AppLayout>
-            </Route>
-            <Route path="/browse">
-              <AppLayout><Browse /></AppLayout>
-            </Route>
-            <Route path="/profile/:clerkId">
-              <AppLayout><SellerProfile /></AppLayout>
-            </Route>
+          <Suspense fallback={<PageLoader />}>
+            <Switch>
+              <Route path="/sign-in/*?" component={SignInPage} />
+              <Route path="/sign-up/*?" component={SignUpPage} />
 
-            {/* Protected Routes */}
-            <Route path="/listings/new">
-              <AppLayout><ProtectedRoute component={CreateListing} /></AppLayout>
-            </Route>
-            <Route path="/listings/:id/edit">
-              <AppLayout><ProtectedRoute component={EditListing} /></AppLayout>
-            </Route>
-            <Route path="/listings/:id">
-              <AppLayout><ListingDetail /></AppLayout>
-            </Route>
-            <Route path="/dashboard">
-              <AppLayout><ProtectedRoute component={Dashboard} /></AppLayout>
-            </Route>
-            <Route path="/dashboard/messages">
-              <AppLayout><ProtectedRoute component={Messages} /></AppLayout>
-            </Route>
-            <Route path="/dashboard/wishlist">
-              <AppLayout><ProtectedRoute component={Wishlist} /></AppLayout>
-            </Route>
-            <Route path="/dashboard/settings">
-              <AppLayout><ProtectedRoute component={Settings} /></AppLayout>
-            </Route>
-            <Route path="/admin">
-              <AppLayout><ProtectedRoute component={AdminPanel} /></AppLayout>
-            </Route>
+              <Route path="/">
+                <AppLayout><HomeRedirect /></AppLayout>
+              </Route>
+              <Route path="/browse">
+                <AppLayout><Browse /></AppLayout>
+              </Route>
+              <Route path="/profile/:clerkId">
+                <AppLayout><SellerProfile /></AppLayout>
+              </Route>
 
-            <Route path="*">
-              <AppLayout><NotFound /></AppLayout>
-            </Route>
-          </Switch>
+              {/* Protected Routes */}
+              <Route path="/listings/new">
+                <AppLayout><ProtectedRoute component={CreateListing} /></AppLayout>
+              </Route>
+              <Route path="/listings/:id/edit">
+                <AppLayout><ProtectedRoute component={EditListing} /></AppLayout>
+              </Route>
+              <Route path="/listings/:id">
+                <AppLayout><ListingDetail /></AppLayout>
+              </Route>
+              <Route path="/dashboard">
+                <AppLayout><ProtectedRoute component={Dashboard} /></AppLayout>
+              </Route>
+              <Route path="/dashboard/messages">
+                <AppLayout><ProtectedRoute component={Messages} /></AppLayout>
+              </Route>
+              <Route path="/dashboard/wishlist">
+                <AppLayout><ProtectedRoute component={Wishlist} /></AppLayout>
+              </Route>
+              <Route path="/dashboard/settings">
+                <AppLayout><ProtectedRoute component={Settings} /></AppLayout>
+              </Route>
+              <Route path="/admin">
+                <AppLayout><ProtectedRoute component={AdminPanel} /></AppLayout>
+              </Route>
+
+              <Route path="*">
+                <AppLayout><NotFound /></AppLayout>
+              </Route>
+            </Switch>
+          </Suspense>
           <Toaster />
         </TooltipProvider>
       </QueryClientProvider>
