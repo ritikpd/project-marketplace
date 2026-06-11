@@ -220,41 +220,62 @@ export default function Home() {
         <meta name="twitter:image" content={`${siteOrigin}/opengraph.jpg`} />
       </Helmet>
 
-      {/* Announcement Bar */}
-      <div className="bg-gradient-to-r from-[#3B4FD4] via-primary to-[#0DCAF0] text-white text-center py-2.5 px-4 flex items-center justify-center gap-2 text-xs sm:text-sm font-medium">
-        <Zap className="h-3.5 w-3.5 flex-shrink-0" />
+      {/* ─── Announcement Bar (Red) ───────────────────────────── */}
+      <div className="bg-gradient-to-r from-[#991B1B] via-[#EF4444] to-[#B91C1C] text-white text-center py-2.5 px-4 flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold">
         <span>{t("home.announcement")}</span>
-        <Link href="/sell" className="ml-2 font-bold underline underline-offset-2 hover:no-underline flex-shrink-0">
+        <Link href="/listings/new" className="ml-1 font-black underline underline-offset-2 hover:no-underline flex-shrink-0 opacity-90 hover:opacity-100">
           {t("home.announcementCta")}
         </Link>
       </div>
 
       {/* ─── Hero ─────────────────────────────────────────────── */}
-      <section className="relative pt-16 pb-12 sm:pt-24 sm:pb-16 overflow-hidden">
-        {/* Subtle radial glow */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_0%,rgba(232,28,68,0.18),transparent)]" />
+      <section
+        className="relative pt-14 pb-10 sm:pt-20 sm:pb-14 overflow-hidden"
+        style={{ background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(59,130,246,0.12) 0%, transparent 70%), #050816" }}
+      >
+        {/* Subtle grid texture */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)", backgroundSize: "40px 40px" }}
+        />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
+
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-[11px] sm:text-xs font-semibold text-primary mb-7 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse flex-shrink-0" />
+          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-[11px] sm:text-xs font-semibold text-white/90 mb-6 backdrop-blur-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444] animate-pulse flex-shrink-0" />
             {t("home.badge")}
           </div>
 
-          {/* Heading */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight leading-[1.05] mb-2">
+          {/* Headlines */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.08] mb-1">
             {t("home.hero1")}
           </h1>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.05] mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-cyan-300">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] mb-5">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] via-[#60A5FA] to-[#93C5FD]">
               {t("home.hero2")}
             </span>
-          </h1>
+          </h2>
 
-          {/* Subtitle */}
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-10 max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-white/50 mb-8 max-w-md mx-auto leading-relaxed">
             {t("home.heroSub")}
           </p>
+
+          {/* Dual CTA Buttons */}
+          <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
+            <Link href="/listings/new">
+              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-bold text-sm sm:text-base shadow-lg shadow-red-500/25 transition-all duration-150 hover:scale-105 active:scale-95">
+                <Tag className="h-4 w-4" />
+                {t("home.sellNow")}
+              </button>
+            </Link>
+            <Link href="/browse">
+              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-500/25 transition-all duration-150 hover:scale-105 active:scale-95">
+                <Search className="h-4 w-4" />
+                {t("home.browseListings")}
+              </button>
+            </Link>
+          </div>
 
           {/* Search Block */}
           <div className="max-w-2xl mx-auto">
@@ -266,8 +287,8 @@ export default function Home() {
                   onClick={() => setActiveTab(i)}
                   className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 ${
                     activeTab === i
-                      ? "bg-primary text-white shadow-md shadow-primary/30"
-                      : "bg-white/5 border border-white/10 text-muted-foreground hover:bg-white/10 hover:text-white"
+                      ? "bg-[#3B82F6] text-white shadow-md shadow-blue-500/30"
+                      : "bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   <span className="text-sm">{tab.emoji}</span>
@@ -276,23 +297,23 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Search Bar */}
+            {/* Search Bar — Larger & more prominent */}
             <form onSubmit={handleSearch}>
-              <div className="relative flex items-center bg-[#080d1a]/90 border border-white/12 rounded-2xl p-1.5 shadow-2xl shadow-black/60 backdrop-blur-md gap-2">
-                <Search className="w-5 h-5 text-muted-foreground ml-3 flex-shrink-0" />
+              <div className="relative flex items-center bg-white/[0.06] border-2 border-white/15 hover:border-[#3B82F6]/50 focus-within:border-[#3B82F6] rounded-2xl p-2 shadow-2xl shadow-black/60 backdrop-blur-md gap-2 transition-colors duration-200">
+                <Search className="w-5 h-5 text-white/40 ml-2 flex-shrink-0" />
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t("home.searchPlaceholder")}
-                  className="flex-1 bg-transparent border-none text-sm sm:text-base text-white placeholder:text-muted-foreground/50 focus-visible:ring-0 px-2 h-11"
+                  className="flex-1 bg-transparent border-none text-sm sm:text-base text-white placeholder:text-white/30 focus-visible:ring-0 px-2 h-12"
                 />
-                <div className="hidden sm:flex items-center gap-1.5 text-muted-foreground/40 text-xs mr-1 border-l border-white/8 pl-3 flex-shrink-0">
+                <div className="hidden sm:flex items-center gap-1.5 text-white/25 text-xs mr-1 border-l border-white/10 pl-3 flex-shrink-0">
                   <MapPin className="h-3.5 w-3.5" />
                   <span>{t("home.allNepal")}</span>
                 </div>
                 <Button
                   type="submit"
-                  className="rounded-xl bg-primary hover:bg-primary/90 text-white text-sm font-bold px-5 sm:px-7 h-11 shadow-md shadow-primary/20 flex-shrink-0 transition-all"
+                  className="rounded-xl bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm font-bold px-6 sm:px-8 h-12 shadow-lg shadow-blue-500/25 flex-shrink-0 transition-all"
                 >
                   {t("home.search")}
                 </Button>
@@ -302,16 +323,16 @@ export default function Home() {
             {/* Location strip */}
             <div className="mt-3 flex items-center justify-center min-h-[22px]">
               {geo.city ? (
-                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <MapPin className="h-3 w-3 text-primary" />
+                <span className="flex items-center gap-1.5 text-xs text-white/40">
+                  <MapPin className="h-3 w-3 text-[#3B82F6]" />
                   {t("home.showingNear")}{" "}
-                  <span className="text-white font-medium ml-0.5">{geo.city}</span>
+                  <span className="text-white/70 font-medium ml-0.5">{geo.city}</span>
                 </span>
               ) : (
                 <button
                   onClick={geo.request}
                   disabled={geo.loading}
-                  className="flex items-center gap-1.5 text-xs text-muted-foreground/70 hover:text-primary transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1.5 text-xs text-white/35 hover:text-[#3B82F6] transition-colors disabled:opacity-50"
                 >
                   <Navigation className="h-3 w-3" />
                   {geo.loading
@@ -322,6 +343,26 @@ export default function Home() {
                 </button>
               )}
             </div>
+          </div>
+
+          {/* ─── Trust Statistics ─────────────────────────── */}
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
+            {[
+              { val: t("home.stat1Value"), label: t("home.stat1Label"), color: "#3B82F6" },
+              { val: t("home.stat2Value"), label: t("home.stat2Label"), color: "#EF4444" },
+              { val: t("home.stat3Value"), label: t("home.stat3Label"), color: "#3B82F6" },
+              { val: t("home.stat4Value"), label: t("home.stat4Label"), color: "#22C55E" },
+            ].map(({ val, label, color }) => (
+              <div
+                key={label}
+                className="flex flex-col items-center py-4 px-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-white/15 transition-colors"
+              >
+                <span className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color }}>
+                  {val}
+                </span>
+                <span className="text-xs text-white/50 mt-1 font-medium tracking-wide uppercase">{label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
