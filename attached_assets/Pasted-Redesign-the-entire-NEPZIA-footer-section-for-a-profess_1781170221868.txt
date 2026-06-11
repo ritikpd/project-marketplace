@@ -1,0 +1,107 @@
+Redesign the entire NEPZIA footer section for a professional OLX-like marketplace.
+
+Requirements:
+
+1. Remove:
+- Google Play button
+- App Store button
+- Any mobile app related content
+- Unnecessary empty spaces
+
+2. Replace current logo with a premium modern brand logo:
+- Stylized "N" icon
+- Blue to Cyan gradient
+- Minimal, clean, trustworthy
+- Similar quality to Stripe, Notion, Airbnb, Linear brands
+- Professional marketplace identity
+
+3. Replace tagline:
+
+Current:
+"Nepal's trusted marketplace for buying, selling and renting."
+
+New:
+"Buy, Sell & Rent Anything Across Nepal."
+"Safe Deals. Verified Listings. Trusted Community."
+
+4. Add Trust Section:
+
+✓ Verified Listings
+✓ Secure Messaging
+✓ Fast Posting
+✓ Community Driven
+
+Use premium outline icons.
+
+5. Footer Layout:
+
+Column 1:
+Brand logo
+Short description
+Social icons
+
+Column 2:
+Marketplace
+- Browse Listings
+- Categories
+- Post Ad
+- Featured Ads
+
+Column 3:
+Company
+- About Us
+- Contact
+- Careers
+- Blog
+
+Column 4:
+Support
+- Help Center
+- Safety Tips
+- Terms of Service
+- Privacy Policy
+
+6. Bottom Bar:
+
+SSL Secured
+Verified Users
+Safe Transactions
+
+Copyright:
+© 2026 NEPZIA. All rights reserved.
+
+Made for Nepal 🇳🇵
+
+7. Design Requirements:
+
+- Dark premium background (#050816)
+- Glassmorphism cards
+- Soft blue glow effects
+- Perfect spacing
+- Mobile responsive
+- Modern typography
+- Consistent icon sizes
+- Professional SaaS-level design
+- Similar quality to OLX, Airbnb, Stripe and Linear
+
+8. Fix Existing Problems:
+
+- Alignment issues
+- Uneven spacing
+- Icon sizing inconsistency
+- Footer responsiveness
+- Typography hierarchy
+- Contrast issues
+- Hover animations
+- Accessibility improvements
+
+9. Add:
+
+Hover effects on links
+Animated social icons
+Subtle gradient divider
+Smooth transitions
+Professional micro-interactions
+
+Goal:
+Make the footer look like a billion-dollar tech marketplace, increase trust, improve branding, and make NEPZIA feel like Nepal's leading classified marketplace.
