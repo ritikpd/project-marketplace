@@ -1,3 +1,4 @@
 - [NEPZIA setup](nepzia-setup.md) — full NEPZIA marketplace bootstrap steps and gotchas for future sessions
 - [Object Storage Setup](object-storage-setup.md) — presigned URL flow, image serving convention, ImageUploader prop shape, no-Uppy decision
 - [NEPZIA Critical Fixes](nepzia-critical-fixes.md) — Helmet 7 CSP quirk, sql.raw→inArray pattern, N+1 batch patterns, schema index syntax
+- [NEPZIA Brand Colors](nepzia-brand.md) — electric blue rebrand: primary hsl(227 83% 60%)=#4361EE, gradient anchors #3B4FD4→#4361EE→#0DCAF0; logo is /logo.png (N-icon PNG, no SVG)

@@ -221,7 +221,7 @@ export default function Home() {
       </Helmet>
 
       {/* Announcement Bar */}
-      <div className="bg-gradient-to-r from-primary via-[#c91439] to-pink-600 text-white text-center py-2.5 px-4 flex items-center justify-center gap-2 text-xs sm:text-sm font-medium">
+      <div className="bg-gradient-to-r from-[#3B4FD4] via-primary to-[#0DCAF0] text-white text-center py-2.5 px-4 flex items-center justify-center gap-2 text-xs sm:text-sm font-medium">
         <Zap className="h-3.5 w-3.5 flex-shrink-0" />
         <span>{t("home.announcement")}</span>
         <Link href="/sell" className="ml-2 font-bold underline underline-offset-2 hover:no-underline flex-shrink-0">
@@ -246,7 +246,7 @@ export default function Home() {
             {t("home.hero1")}
           </h1>
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.05] mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-pink-400 to-rose-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-cyan-300">
               {t("home.hero2")}
             </span>
           </h1>

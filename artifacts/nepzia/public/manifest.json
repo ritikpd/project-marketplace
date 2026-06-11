@@ -1,11 +1,11 @@
 {
   "name": "NEPZIA Marketplace",
   "short_name": "NEPZIA",
-  "description": "Nepal's premium marketplace for electronics, vehicles, and property",
+  "description": "Nepal's trusted marketplace for electronics, vehicles, property and rentals",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0C0C0E",
-  "theme_color": "#E0273A",
+  "background_color": "#05081A",
+  "theme_color": "#4361EE",
   "icons": [
     {
       "src": "/favicon.svg",

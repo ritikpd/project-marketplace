@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { Show, useUser, useClerk } from "@clerk/react";
-import { Menu, X, User, Plus, Heart, MessageSquare, LogOut, Settings, LayoutDashboard, ShieldAlert, ChevronDown } from "lucide-react";
+import { Menu, X, User, Plus, Heart, MessageSquare, LogOut, Settings, LayoutDashboard, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -37,13 +37,26 @@ export function Navbar() {
       <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-              <img src="/logo.svg" alt="NEPZIA" className="h-8 w-auto" />
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+              <img
+                src="/logo.png"
+                alt="NEPZIA"
+                className="h-8 sm:h-10 w-auto object-contain"
+                style={{ imageRendering: "crisp-edges" }}
+              />
+              <span className="text-white font-black text-base sm:text-lg tracking-widest">
+                NEPZIA
+              </span>
             </Link>
 
             <nav className="hidden lg:flex items-center gap-1">
               {NAV_LINKS.map(({ key, href }) => (
-                <Link key={key} href={href} className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-white hover:bg-white/5 rounded-lg transition-all">
+                <Link
+                  key={key}
+                  href={href}
+                  className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                >
                   {t(key)}
                 </Link>
               ))}
@@ -147,6 +160,7 @@ export function Navbar() {
           </div>
         </div>
 
+        {/* Mobile Menu */}
         {mobileOpen && (
           <div className="lg:hidden border-t border-white/5 bg-background/95 backdrop-blur-xl px-4 py-4 flex flex-col gap-1">
             {NAV_LINKS.map(({ key, href }) => (

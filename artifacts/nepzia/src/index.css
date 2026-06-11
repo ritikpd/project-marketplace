@@ -75,7 +75,7 @@
   
   --border: 214 32% 91%;
   --input: 214 32% 91%;
-  --ring: 348 83% 47%;
+  --ring: 227 83% 55%;
   
   --card: 0 0% 100%;
   --card-foreground: 222 47% 11%;
@@ -85,7 +85,7 @@
   --popover-foreground: 222 47% 11%;
   --popover-border: 214 32% 91%;
   
-  --primary: 348 83% 47%; /* Crimson Red */
+  --primary: 227 83% 55%; /* Electric Blue */
   --primary-foreground: 0 0% 100%;
   
   --secondary: 222 47% 11%; /* Deep Blue */
@@ -103,13 +103,13 @@
   --sidebar: 0 0% 100%;
   --sidebar-foreground: 222 47% 11%;
   --sidebar-border: 214 32% 91%;
-  --sidebar-primary: 348 83% 47%;
+  --sidebar-primary: 227 83% 55%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 210 40% 96.1%;
   --sidebar-accent-foreground: 222.2 47.4% 11.2%;
-  --sidebar-ring: 348 83% 47%;
+  --sidebar-ring: 227 83% 55%;
   
-  --chart-1: 348 83% 47%;
+  --chart-1: 227 83% 55%;
   --chart-2: 222 47% 11%;
   --chart-3: 173 58% 39%;
   --chart-4: 43 74% 66%;
@@ -135,7 +135,7 @@
   /* Glassy borders */
   --border: 226 30% 16%;
   --input: 226 30% 16%;
-  --ring: 348 83% 53%; /* Crimson Red */
+  --ring: 227 83% 60%; /* Electric Blue */
   
   /* Glassmorphism cards */
   --card: 226 47% 8%; 
@@ -146,7 +146,7 @@
   --popover-foreground: 0 0% 100%;
   --popover-border: 226 30% 18%;
   
-  --primary: 348 83% 53%; /* Crimson Red from flag */
+  --primary: 227 83% 60%; /* Electric Blue from logo */
   --primary-foreground: 0 0% 100%;
   
   --secondary: 226 47% 14%; /* Lighter blue */
@@ -164,13 +164,13 @@
   --sidebar: 226 47% 8%;
   --sidebar-foreground: 0 0% 100%;
   --sidebar-border: 226 30% 18%;
-  --sidebar-primary: 348 83% 53%;
+  --sidebar-primary: 227 83% 60%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 226 47% 18%;
   --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-ring: 348 83% 53%;
+  --sidebar-ring: 227 83% 60%;
 
-  --chart-1: 348 83% 53%;
+  --chart-1: 227 83% 60%;
   --chart-2: 226 47% 30%;
   --chart-3: 173 58% 39%;
   --chart-4: 43 74% 66%;

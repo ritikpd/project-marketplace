@@ -1,18 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" fill="none">
   <defs>
-    <linearGradient id="ng" x1="2" y1="0" x2="46" y2="0" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#E0273A"/>
-      <stop offset="1" stop-color="#BF1878"/>
+    <linearGradient id="ng" x1="2" y1="0" x2="46" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B4FD4"/>
+      <stop offset="0.5" stop-color="#4361EE"/>
+      <stop offset="1" stop-color="#0DCAF0"/>
     </linearGradient>
   </defs>
-
-  <!-- N body (geometric) -->
   <path d="M2,52 L2,18 L12,18 L36,44 L36,18 L46,18 L46,52 L36,52 L12,26 L12,52 Z" fill="url(#ng)"/>
-
-  <!-- Himalayan triple-peak (white) -->
-  <path d="M0,20 L4,14 L14,7 L19,12 L24,4 L29,12 L34,7 L44,14 L48,20 L48,18 L0,18 Z" fill="white"/>
-
-  <!-- NEPZIA wordmark -->
   <text x="59" y="38"
     font-family="'Helvetica Neue','Arial Black',Arial,sans-serif"
     font-weight="800" font-size="27" letter-spacing="4"
