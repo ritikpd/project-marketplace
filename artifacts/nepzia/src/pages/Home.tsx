@@ -4,8 +4,8 @@ import { Link, useLocation } from "wouter";
 import {
   Search, MapPin, Navigation, ArrowRight,
   MonitorSmartphone, Laptop, Car, Bike, Home as HomeIcon, Building2,
-  Gamepad2, TrendingUp, ShieldCheck, MessageCircle, Tag,
-  Zap, CheckCircle2, Camera,
+  Gamepad2, TrendingUp, ShieldCheck, MessageCircle, Tag, Zap,
+  Camera,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,152 +19,34 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "react-i18next";
 
-const SEARCH_TABS = [
-  { key: "tabs.electronics", emoji: "📱", category: "phones" },
-  { key: "tabs.vehicles", emoji: "🚗", category: "cars" },
-  { key: "tabs.property", emoji: "🏠", category: "flat-rent" },
-  { key: "tabs.rentals", emoji: "🔑", category: "house-rent" },
-];
-
 const ALL_CATEGORIES = [
-  {
-    icon: MonitorSmartphone,
-    key: "categories.phones",
-    slug: "phones",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20 hover:border-blue-500/40",
-    color: "text-blue-400",
-    iconBg: "bg-blue-500/15",
-  },
-  {
-    icon: Laptop,
-    key: "categories.laptops",
-    slug: "laptops",
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20 hover:border-violet-500/40",
-    color: "text-violet-400",
-    iconBg: "bg-violet-500/15",
-  },
-  {
-    icon: Car,
-    key: "categories.cars",
-    slug: "cars",
-    bg: "bg-orange-500/10",
-    border: "border-orange-500/20 hover:border-orange-500/40",
-    color: "text-orange-400",
-    iconBg: "bg-orange-500/15",
-  },
-  {
-    icon: Bike,
-    key: "categories.bikes",
-    slug: "bikes",
-    bg: "bg-green-500/10",
-    border: "border-green-500/20 hover:border-green-500/40",
-    color: "text-green-400",
-    iconBg: "bg-green-500/15",
-  },
-  {
-    icon: HomeIcon,
-    key: "categories.houseRent",
-    slug: "house-rent",
-    bg: "bg-pink-500/10",
-    border: "border-pink-500/20 hover:border-pink-500/40",
-    color: "text-pink-400",
-    iconBg: "bg-pink-500/15",
-  },
-  {
-    icon: Building2,
-    key: "categories.flatRent",
-    slug: "flat-rent",
-    bg: "bg-teal-500/10",
-    border: "border-teal-500/20 hover:border-teal-500/40",
-    color: "text-teal-400",
-    iconBg: "bg-teal-500/15",
-  },
-  {
-    icon: TrendingUp,
-    key: "categories.landSale",
-    slug: "land-sale",
-    bg: "bg-yellow-500/10",
-    border: "border-yellow-500/20 hover:border-yellow-500/40",
-    color: "text-yellow-400",
-    iconBg: "bg-yellow-500/15",
-  },
-  {
-    icon: Gamepad2,
-    key: "categories.gaming",
-    slug: "gaming-consoles",
-    bg: "bg-indigo-500/10",
-    border: "border-indigo-500/20 hover:border-indigo-500/40",
-    color: "text-indigo-400",
-    iconBg: "bg-indigo-500/15",
-  },
-];
-
-const HOW_IT_WORKS = [
-  {
-    icon: Camera,
-    step: "01",
-    titleKey: "home.step1Title",
-    subKey: "home.step1Sub",
-    color: "text-primary",
-    bg: "bg-primary/10",
-    border: "border-primary/20",
-  },
-  {
-    icon: MessageCircle,
-    step: "02",
-    titleKey: "home.step2Title",
-    subKey: "home.step2Sub",
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
-  },
-  {
-    icon: CheckCircle2,
-    step: "03",
-    titleKey: "home.step3Title",
-    subKey: "home.step3Sub",
-    color: "text-green-400",
-    bg: "bg-green-500/10",
-    border: "border-green-500/20",
-  },
+  { icon: MonitorSmartphone, label: "Phones",       slug: "phones",          color: "text-sky-400",    iconBg: "bg-sky-500/10",     border: "border-sky-500/20 hover:border-sky-400/50",     emoji: "📱" },
+  { icon: Laptop,           label: "Laptops",       slug: "laptops",         color: "text-violet-400", iconBg: "bg-violet-500/10",  border: "border-violet-500/20 hover:border-violet-400/50", emoji: "💻" },
+  { icon: Car,              label: "Cars",           slug: "cars",            color: "text-orange-400", iconBg: "bg-orange-500/10",  border: "border-orange-500/20 hover:border-orange-400/50", emoji: "🚗" },
+  { icon: Bike,             label: "Bikes",          slug: "bikes",           color: "text-green-400",  iconBg: "bg-green-500/10",   border: "border-green-500/20 hover:border-green-400/50",  emoji: "🏍️" },
+  { icon: HomeIcon,         label: "House Rent",     slug: "house-rent",      color: "text-pink-400",   iconBg: "bg-pink-500/10",    border: "border-pink-500/20 hover:border-pink-400/50",    emoji: "🏠" },
+  { icon: Building2,        label: "Flat Rent",      slug: "flat-rent",       color: "text-teal-400",   iconBg: "bg-teal-500/10",    border: "border-teal-500/20 hover:border-teal-400/50",    emoji: "🏢" },
+  { icon: TrendingUp,       label: "Land Sale",      slug: "land-sale",       color: "text-yellow-400", iconBg: "bg-yellow-500/10",  border: "border-yellow-500/20 hover:border-yellow-400/50",emoji: "🌄" },
+  { icon: Gamepad2,         label: "Gaming",         slug: "gaming-consoles", color: "text-indigo-400", iconBg: "bg-indigo-500/10",  border: "border-indigo-500/20 hover:border-indigo-400/50",emoji: "🎮" },
+  { icon: Camera,           label: "Cameras",        slug: "cameras",         color: "text-rose-400",   iconBg: "bg-rose-500/10",    border: "border-rose-500/20 hover:border-rose-400/50",    emoji: "📷" },
+  { icon: MonitorSmartphone,label: "Electronics",    slug: "phones",          color: "text-blue-400",   iconBg: "bg-blue-500/10",    border: "border-blue-500/20 hover:border-blue-400/50",    emoji: "🔌" },
 ];
 
 const TRUST_ITEMS = [
-  {
-    icon: Tag,
-    titleKey: "home.trust.free",
-    subKey: "home.trust.freeSub",
-    color: "text-primary",
-    bg: "bg-primary/10",
-    border: "border-primary/20",
-  },
-  {
-    icon: MessageCircle,
-    titleKey: "home.trust.secure",
-    subKey: "home.trust.secureSub",
-    color: "text-blue-400",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20",
-  },
-  {
-    icon: ShieldCheck,
-    titleKey: "home.trust.moderated",
-    subKey: "home.trust.moderatedSub",
-    color: "text-green-400",
-    bg: "bg-green-500/10",
-    border: "border-green-500/20",
-  },
+  { icon: ShieldCheck, titleKey: "home.trust.verified", subKey: "home.trust.verifiedSub", color: "text-emerald-400", bg: "bg-emerald-500/10", dot: "bg-emerald-400" },
+  { icon: MessageCircle, titleKey: "home.trust.safe", subKey: "home.trust.safeSub",     color: "text-blue-400",    bg: "bg-blue-500/10",    dot: "bg-blue-400" },
+  { icon: Zap,           titleKey: "home.trust.fast", subKey: "home.trust.fastSub",     color: "text-amber-400",   bg: "bg-amber-500/10",   dot: "bg-amber-400" },
+  { icon: Tag,           titleKey: "home.trust.free", subKey: "home.trust.freeSub",     color: "text-violet-400",  bg: "bg-violet-500/10",  dot: "bg-violet-400" },
 ];
 
 function CardSkeleton() {
   return (
-    <div className="rounded-xl bg-white/5 border border-white/5 overflow-hidden">
-      <Skeleton className="h-48 w-full rounded-none bg-white/5" />
-      <div className="p-4 space-y-2">
-        <Skeleton className="h-4 w-3/4 bg-white/5" />
-        <Skeleton className="h-4 w-1/2 bg-white/5" />
+    <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] overflow-hidden">
+      <Skeleton className="h-44 w-full rounded-none bg-white/5" />
+      <div className="p-3 space-y-2">
+        <Skeleton className="h-3.5 w-3/4 bg-white/5" />
+        <Skeleton className="h-3.5 w-1/3 bg-white/5" />
+        <Skeleton className="h-3 w-1/2 bg-white/5" />
       </div>
     </div>
   );
@@ -173,7 +55,6 @@ function CardSkeleton() {
 export default function Home() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState(0);
   const geo = useGeolocation();
   const { t } = useTranslation();
 
@@ -189,10 +70,8 @@ export default function Home() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const category = SEARCH_TABS[activeTab].category;
     const params = new URLSearchParams();
     if (searchQuery.trim()) params.set("q", searchQuery.trim());
-    params.set("category", category);
     setLocation(`/browse?${params.toString()}`);
   };
 
@@ -200,133 +79,76 @@ export default function Home() {
   const homeDesc = "Nepal's trusted marketplace for electronics, vehicles, property, rentals and local services. Buy and sell securely across Kathmandu, Pokhara and beyond.";
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Helmet>
-        <title>NEPZIA — Buy, Sell & Rent Anything Across Nepal</title>
+        <title>NEPZIA — Find Anything Across Nepal</title>
         <meta name="description" content={homeDesc} />
         <link rel="canonical" href={siteOrigin} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="NEPZIA" />
-        <meta property="og:title" content="NEPZIA — Trusted Marketplace For Nepal" />
+        <meta property="og:title" content="NEPZIA — Find Anything Across Nepal" />
         <meta property="og:description" content={homeDesc} />
         <meta property="og:image" content={`${siteOrigin}/opengraph.jpg`} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
         <meta property="og:url" content={siteOrigin} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@nepzia" />
-        <meta name="twitter:title" content="NEPZIA — Trusted Marketplace For Nepal" />
+        <meta name="twitter:title" content="NEPZIA — Find Anything Across Nepal" />
         <meta name="twitter:description" content={homeDesc} />
         <meta name="twitter:image" content={`${siteOrigin}/opengraph.jpg`} />
       </Helmet>
 
-      {/* ─── Announcement Bar (Red) ───────────────────────────── */}
-      <div className="bg-gradient-to-r from-[#991B1B] via-[#EF4444] to-[#B91C1C] text-white text-center py-2.5 px-4 flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold">
+      {/* ─── Announcement Bar ─────────────────────────────────── */}
+      <div className="bg-gradient-to-r from-[#991B1B] via-[#EF4444] to-[#B91C1C] text-white text-center py-2 px-4 flex items-center justify-center gap-2 text-xs font-medium">
         <span>{t("home.announcement")}</span>
-        <Link href="/listings/new" className="ml-1 font-black underline underline-offset-2 hover:no-underline flex-shrink-0 opacity-90 hover:opacity-100">
+        <Link href="/listings/new" className="font-bold underline underline-offset-2 hover:no-underline">
           {t("home.announcementCta")}
         </Link>
       </div>
 
-      {/* ─── Hero ─────────────────────────────────────────────── */}
-      <section
-        className="relative pt-14 pb-10 sm:pt-20 sm:pb-14 overflow-hidden"
-        style={{ background: "radial-gradient(ellipse 80% 60% at 50% -10%, rgba(59,130,246,0.12) 0%, transparent 70%), #050816" }}
-      >
-        {/* Subtle grid texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)", backgroundSize: "40px 40px" }}
-        />
+      {/* ─── Hero — Compact, Search-First ─────────────────────── */}
+      <section className="relative py-10 sm:py-14 overflow-hidden bg-[#07091A]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(59,130,246,0.10),transparent)]" />
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
-
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-[11px] sm:text-xs font-semibold text-white/90 mb-6 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444] animate-pulse flex-shrink-0" />
-            {t("home.badge")}
-          </div>
-
-          {/* Headlines */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.08] mb-1">
-            {t("home.hero1")}
-          </h1>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] mb-5">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] via-[#60A5FA] to-[#93C5FD]">
-              {t("home.hero2")}
-            </span>
-          </h2>
-
-          <p className="text-sm sm:text-base text-white/50 mb-8 max-w-md mx-auto leading-relaxed">
-            {t("home.heroSub")}
-          </p>
-
-          {/* Dual CTA Buttons */}
-          <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
-            <Link href="/listings/new">
-              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-bold text-sm sm:text-base shadow-lg shadow-red-500/25 transition-all duration-150 hover:scale-105 active:scale-95">
-                <Tag className="h-4 w-4" />
-                {t("home.sellNow")}
-              </button>
-            </Link>
-            <Link href="/browse">
-              <button className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-500/25 transition-all duration-150 hover:scale-105 active:scale-95">
-                <Search className="h-4 w-4" />
-                {t("home.browseListings")}
-              </button>
-            </Link>
-          </div>
-
-          {/* Search Block */}
-          <div className="max-w-2xl mx-auto">
-            {/* Category Tabs */}
-            <div className="flex items-center justify-center flex-wrap gap-1.5 mb-3">
-              {SEARCH_TABS.map((tab, i) => (
-                <button
-                  key={tab.key}
-                  onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-150 ${
-                    activeTab === i
-                      ? "bg-[#3B82F6] text-white shadow-md shadow-blue-500/30"
-                      : "bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white"
-                  }`}
-                >
-                  <span className="text-sm">{tab.emoji}</span>
-                  {t(`home.${tab.key}`)}
-                </button>
-              ))}
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-2xl mx-auto text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/70 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#EF4444] animate-pulse" />
+              {t("home.badge")}
             </div>
 
-            {/* Search Bar — Larger & more prominent */}
-            <form onSubmit={handleSearch}>
-              <div className="relative flex items-center bg-white/[0.06] border-2 border-white/15 hover:border-[#3B82F6]/50 focus-within:border-[#3B82F6] rounded-2xl p-2 shadow-2xl shadow-black/60 backdrop-blur-md gap-2 transition-colors duration-200">
-                <Search className="w-5 h-5 text-white/40 ml-2 flex-shrink-0" />
+            {/* Headline — purposely smaller than before */}
+            <h1 className="text-2xl sm:text-4xl md:text-[2.6rem] font-black text-white leading-tight tracking-tight mb-3">
+              {t("home.heroHeadline")}
+            </h1>
+            <p className="text-sm sm:text-base text-white/50 mb-7 max-w-lg mx-auto leading-relaxed">
+              {t("home.heroSub")}
+            </p>
+
+            {/* Search Bar ─ full-width, prominent */}
+            <form onSubmit={handleSearch} className="mb-4">
+              <div className="flex items-center gap-2 bg-white/[0.07] border-2 border-white/[0.12] hover:border-[#3B82F6]/40 focus-within:border-[#3B82F6] rounded-2xl px-4 py-2 shadow-2xl shadow-black/50 transition-colors duration-200">
+                <Search className="w-5 h-5 text-white/35 flex-shrink-0" />
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t("home.searchPlaceholder")}
-                  className="flex-1 bg-transparent border-none text-sm sm:text-base text-white placeholder:text-white/30 focus-visible:ring-0 px-2 h-12"
+                  className="flex-1 bg-transparent border-none text-white placeholder:text-white/30 focus-visible:ring-0 h-11 text-base px-1"
                 />
-                <div className="hidden sm:flex items-center gap-1.5 text-white/25 text-xs mr-1 border-l border-white/10 pl-3 flex-shrink-0">
-                  <MapPin className="h-3.5 w-3.5" />
-                  <span>{t("home.allNepal")}</span>
-                </div>
-                <Button
+                <button
                   type="submit"
-                  className="rounded-xl bg-[#3B82F6] hover:bg-[#2563EB] text-white text-sm font-bold px-6 sm:px-8 h-12 shadow-lg shadow-blue-500/25 flex-shrink-0 transition-all"
+                  className="flex-shrink-0 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold text-sm px-5 sm:px-7 h-10 rounded-xl transition-colors shadow-lg shadow-blue-500/20"
                 >
                   {t("home.search")}
-                </Button>
+                </button>
               </div>
             </form>
 
             {/* Location strip */}
-            <div className="mt-3 flex items-center justify-center min-h-[22px]">
+            <div className="flex items-center justify-center gap-4 min-h-[20px]">
               {geo.city ? (
                 <span className="flex items-center gap-1.5 text-xs text-white/40">
                   <MapPin className="h-3 w-3 text-[#3B82F6]" />
-                  {t("home.showingNear")}{" "}
-                  <span className="text-white/70 font-medium ml-0.5">{geo.city}</span>
+                  {t("home.showingNear")} <span className="text-white/60 font-medium ml-0.5">{geo.city}</span>
                 </span>
               ) : (
                 <button
@@ -335,109 +157,86 @@ export default function Home() {
                   className="flex items-center gap-1.5 text-xs text-white/35 hover:text-[#3B82F6] transition-colors disabled:opacity-50"
                 >
                   <Navigation className="h-3 w-3" />
-                  {geo.loading
-                    ? t("home.detectingLocation")
-                    : geo.permissionDenied
-                    ? t("home.locationDenied")
-                    : t("home.detectLocation")}
+                  {geo.loading ? t("home.detectingLocation") : geo.permissionDenied ? t("home.locationDenied") : t("home.detectLocation")}
                 </button>
               )}
+              <span className="text-white/15">·</span>
+              <Link href="/listings/new" className="flex items-center gap-1 text-xs text-white/35 hover:text-[#EF4444] transition-colors font-medium">
+                <Tag className="h-3 w-3" />
+                {t("home.sellNow")}
+              </Link>
             </div>
-          </div>
-
-          {/* ─── Trust Statistics ─────────────────────────── */}
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
-            {[
-              { val: t("home.stat1Value"), label: t("home.stat1Label"), color: "#3B82F6" },
-              { val: t("home.stat2Value"), label: t("home.stat2Label"), color: "#EF4444" },
-              { val: t("home.stat3Value"), label: t("home.stat3Label"), color: "#3B82F6" },
-              { val: t("home.stat4Value"), label: t("home.stat4Label"), color: "#22C55E" },
-            ].map(({ val, label, color }) => (
-              <div
-                key={label}
-                className="flex flex-col items-center py-4 px-3 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-white/15 transition-colors"
-              >
-                <span className="text-2xl sm:text-3xl font-black tracking-tight" style={{ color }}>
-                  {val}
-                </span>
-                <span className="text-xs text-white/50 mt-1 font-medium tracking-wide uppercase">{label}</span>
-              </div>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Categories ───────────────────────────────────────── */}
-      <section className="py-12 sm:py-16 bg-[#030710]">
+      {/* ─── Trust Strip ──────────────────────────────────────── */}
+      <div className="bg-[#07091A] border-y border-white/[0.06]">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex items-end justify-between mb-8">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                {t("home.exploreCategories")}
-              </h2>
-              <p className="text-muted-foreground text-sm mt-1">{t("home.categoriesSub")}</p>
-            </div>
-            <Link
-              href="/browse"
-              className="hidden sm:flex items-center gap-1 text-primary hover:text-primary/80 font-semibold text-sm transition-colors"
-            >
-              {t("home.viewAll")} <ArrowRight className="w-3.5 h-3.5" />
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/[0.06]">
+            {TRUST_ITEMS.map(({ icon: Icon, titleKey, subKey, color, bg, dot }) => (
+              <div key={titleKey} className="flex items-center gap-3 px-4 py-4 hover:bg-white/[0.02] transition-colors">
+                <div className={`w-9 h-9 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>
+                  <Icon className={`h-4 w-4 ${color}`} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-white text-xs font-semibold leading-tight truncate">{t(titleKey)}</p>
+                  <p className="text-white/40 text-[11px] leading-tight mt-0.5 truncate">{t(subKey)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Popular Categories ────────────────────────────────── */}
+      <section className="py-8 sm:py-10 bg-[#06081A]">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-base sm:text-lg font-bold text-white">{t("home.exploreCategories")}</h2>
+            <Link href="/browse" className="flex items-center gap-1 text-[#3B82F6] text-xs font-semibold hover:text-blue-400 transition-colors">
+              {t("home.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3">
+          {/* Mobile: horizontal scroll; Desktop: grid */}
+          <div className="flex gap-2.5 overflow-x-auto pb-2 sm:pb-0 sm:grid sm:grid-cols-5 lg:grid-cols-10 scrollbar-hide">
             {ALL_CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (
-                <Link key={cat.slug} href={`/browse?category=${cat.slug}`}>
-                  <div
-                    className={`group ${cat.bg} border ${cat.border} rounded-2xl p-4 sm:p-5 flex flex-col items-center text-center cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg`}
-                  >
-                    <div
-                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${cat.iconBg} flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform duration-150`}
-                    >
-                      <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${cat.color}`} />
+                <Link key={cat.slug + cat.label} href={`/browse?category=${cat.slug}`} className="flex-shrink-0">
+                  <div className={`group flex flex-col items-center gap-2 p-3 sm:p-3.5 rounded-xl border ${cat.border} bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-150 cursor-pointer w-20 sm:w-auto`}>
+                    <div className={`w-10 h-10 rounded-xl ${cat.iconBg} flex items-center justify-center group-hover:scale-105 transition-transform`}>
+                      <Icon className={`w-5 h-5 ${cat.color}`} />
                     </div>
-                    <span className="text-white font-medium text-xs sm:text-sm leading-snug">
-                      {t(`home.${cat.key}`)}
-                    </span>
+                    <span className="text-white/75 font-medium text-[11px] text-center leading-tight">{cat.label}</span>
                   </div>
                 </Link>
               );
             })}
-          </div>
-
-          <div className="mt-5 text-center sm:hidden">
-            <Link href="/browse" className="text-primary text-sm font-semibold flex items-center justify-center gap-1">
-              {t("home.viewAll")} <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
         </div>
       </section>
 
       {/* ─── Nearby Listings ──────────────────────────────────── */}
       {geo.lat && nearby && nearby.length > 0 && (
-        <section className="py-12 sm:py-16 border-y border-white/5">
+        <section className="py-8 sm:py-10 border-t border-white/[0.05]">
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="flex items-end justify-between mb-8">
+            <div className="flex items-center justify-between mb-5">
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" />
+                <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-[#3B82F6]" />
                   {t("home.nearYou")}
                 </h2>
-                <p className="text-muted-foreground text-sm mt-1">
-                  {t("home.nearYouSub")}{" "}
-                  <span className="text-white font-medium">{geo.city}</span>
+                <p className="text-white/40 text-xs mt-0.5">
+                  {t("home.nearYouSub")} <span className="text-white/60 font-medium">{geo.city}</span>
                 </p>
               </div>
-              <Link
-                href={`/browse?lat=${geo.lat}&lng=${geo.lng}`}
-                className="hidden sm:flex items-center gap-1 text-primary hover:text-primary/80 font-semibold text-sm"
-              >
-                {t("home.viewAll")} <ArrowRight className="w-3.5 h-3.5" />
+              <Link href={`/browse?lat=${geo.lat}&lng=${geo.lng}`} className="flex items-center gap-1 text-[#3B82F6] text-xs font-semibold hover:text-blue-400 transition-colors">
+                {t("home.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {nearby.map((listing) => (
                 <ListingCard key={listing.id} listing={listing} />
               ))}
@@ -447,23 +246,18 @@ export default function Home() {
       )}
 
       {/* ─── Featured Listings ────────────────────────────────── */}
-      <section className="py-12 sm:py-16 border-b border-white/5">
+      <section className="py-8 sm:py-10 border-t border-white/[0.05]">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex items-end justify-between mb-8">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                {t("home.premiumPicks")}
-              </h2>
-              <p className="text-muted-foreground text-sm mt-1">{t("home.premiumPicksSub")}</p>
+              <h2 className="text-base sm:text-lg font-bold text-white">{t("home.premiumPicks")}</h2>
+              <p className="text-white/40 text-xs mt-0.5">{t("home.premiumPicksSub")}</p>
             </div>
-            <Link
-              href="/browse"
-              className="hidden sm:flex items-center gap-1 text-primary hover:text-primary/80 font-semibold text-sm"
-            >
-              {t("home.viewAll")} <ArrowRight className="w-3.5 h-3.5" />
+            <Link href="/browse?featured=true" className="flex items-center gap-1 text-[#3B82F6] text-xs font-semibold hover:text-blue-400 transition-colors">
+              {t("home.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {featuredLoading
               ? Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)
               : featured?.map((l) => <ListingCard key={l.id} listing={l} />)}
@@ -471,113 +265,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── How It Works ─────────────────────────────────────── */}
-      <section className="py-14 sm:py-20 bg-[#030710]">
+      {/* ─── Recently Added ───────────────────────────────────── */}
+      <section className="py-8 sm:py-10 border-t border-white/[0.05]">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 sm:mb-14">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">
-              {t("home.howItWorks")}
-            </h2>
-            <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
-              {t("home.howItWorksSub")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-3xl mx-auto relative">
-            {/* Connector line (desktop only) */}
-            <div className="hidden sm:block absolute top-8 left-[16.5%] right-[16.5%] h-px bg-gradient-to-r from-primary/30 via-blue-500/30 to-green-500/30" />
-
-            {HOW_IT_WORKS.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.step} className="flex flex-col items-center text-center relative">
-                  <div
-                    className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${item.bg} border ${item.border} flex items-center justify-center mb-4 relative z-10`}
-                  >
-                    <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${item.color}`} />
-                    <span className={`absolute -top-2 -right-2 w-5 h-5 rounded-full ${item.bg} border ${item.border} flex items-center justify-center text-[10px] font-black ${item.color}`}>
-                      {item.step}
-                    </span>
-                  </div>
-                  <h3 className="text-white font-semibold text-base mb-1.5">{t(item.titleKey)}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{t(item.subKey)}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Recent Listings ──────────────────────────────────── */}
-      <section className="py-12 sm:py-16 border-b border-white/5">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex items-end justify-between mb-8">
+          <div className="flex items-center justify-between mb-5">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                {t("home.freshDrops")}
-              </h2>
-              <p className="text-muted-foreground text-sm mt-1">{t("home.freshDropsSub")}</p>
+              <h2 className="text-base sm:text-lg font-bold text-white">{t("home.freshDrops")}</h2>
+              <p className="text-white/40 text-xs mt-0.5">{t("home.freshDropsSub")}</p>
             </div>
-            <Link
-              href="/browse"
-              className="hidden sm:flex items-center gap-1 text-primary hover:text-primary/80 font-semibold text-sm"
-            >
-              {t("home.viewAll")} <ArrowRight className="w-3.5 h-3.5" />
+            <Link href="/browse" className="flex items-center gap-1 text-[#3B82F6] text-xs font-semibold hover:text-blue-400 transition-colors">
+              {t("home.viewAll")} <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {recentLoading
               ? Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />)
               : recent?.slice(0, 8).map((l) => <ListingCard key={l.id} listing={l} />)}
           </div>
-          <div className="mt-10 text-center">
+
+          <div className="mt-8 text-center">
             <Link href="/browse">
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/15 text-white hover:bg-white/5 hover:border-white/25 rounded-full px-8 font-semibold"
+                className="border-white/10 text-white hover:bg-white/5 hover:border-white/20 rounded-full px-10 font-semibold"
               >
-                {t("home.viewAllListings")} <ArrowRight className="ml-2 h-4 w-4" />
+                {t("home.viewAllListings")} <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── Trust & Safety ───────────────────────────────────── */}
-      <section className="py-14 sm:py-20 bg-[#030710]">
+      {/* ─── Sell CTA Banner ──────────────────────────────────── */}
+      <section className="py-10 sm:py-12 border-t border-white/[0.05] bg-[#06081A]">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10 sm:mb-14">
-            <span className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-1.5 text-[11px] font-semibold text-green-400 mb-4">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              {t("home.trust.badge")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-3">
-              {t("home.trust.title")}
-            </h2>
-            <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
-              {t("home.trust.sub")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto">
-            {TRUST_ITEMS.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.titleKey}
-                  className={`${item.bg} border ${item.border} rounded-2xl p-6 sm:p-7 flex flex-col items-start gap-4`}
-                >
-                  <div className={`w-11 h-11 rounded-xl ${item.bg} border ${item.border} flex items-center justify-center flex-shrink-0`}>
-                    <Icon className={`h-5 w-5 ${item.color}`} />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-semibold text-base mb-1">{t(item.titleKey)}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{t(item.subKey)}</p>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="rounded-2xl bg-gradient-to-br from-[#1A1F3A] to-[#0D1020] border border-white/[0.08] p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Tag className="h-4 w-4 text-[#EF4444]" />
+                <span className="text-[#EF4444] text-xs font-bold tracking-wider uppercase">Free to List</span>
+              </div>
+              <h3 className="text-white text-xl sm:text-2xl font-black mb-1">Have something to sell?</h3>
+              <p className="text-white/50 text-sm">Post your ad in under 2 minutes. No fees, no commissions.</p>
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <Link href="/browse">
+                <button className="px-5 py-2.5 rounded-full border border-white/15 text-white/70 text-sm font-semibold hover:border-white/30 hover:text-white transition-all">
+                  Browse First
+                </button>
+              </Link>
+              <Link href="/listings/new">
+                <button className="px-6 py-2.5 rounded-full bg-[#EF4444] hover:bg-[#DC2626] text-white font-bold text-sm shadow-lg shadow-red-500/20 transition-all hover:scale-105 active:scale-95">
+                  Post Free Ad
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
