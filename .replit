@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "web", "bash"]
+modules = ["nodejs-20", "web", "bash", "postgresql-16"]
 
 [deployment]
 router = "application"
@@ -37,3 +37,8 @@ externalPort = 3000
 
 [nix]
 channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+ALLOWED_ORIGINS = "https://889b558e-bf56-46e8-a8d2-3c2df16a2340-00-297cqx68qipqi.pike.replit.dev,http://localhost:5173,http://localhost:3000,http://localhost:21411"

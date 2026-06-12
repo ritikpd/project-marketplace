@@ -1,0 +1,203 @@
+You are a senior full-stack engineer.
+
+Analyze the entire NEPZIA marketplace project and make it production-ready.
+
+GOAL:
+Create a fully working OLX-style marketplace where users can:
+
+✔ Register/Login
+✔ Post Ads
+✔ Upload Images
+✔ Browse Ads
+✔ Search Ads
+✔ View Product Details
+✔ Contact Seller
+✔ Edit Ads
+✔ Delete Ads
+✔ Manage Profile
+✔ Mobile Responsive UI
+
+----------------------------------
+
+FIRST TASK
+
+Perform a complete codebase audit.
+
+Find:
+
+1. Broken pages
+2. Unused components
+3. Missing routes
+4. API errors
+5. Database errors
+6. Storage errors
+7. Upload errors
+8. Console errors
+9. Build errors
+10. Security issues
+
+Generate a report.
+
+----------------------------------
+
+IMAGE UPLOAD FIX
+
+Current issue:
+
+Photos show "Internal Server Error".
+
+Investigate:
+
+- Upload API
+- Storage bucket
+- Environment variables
+- Storage permissions
+- Database image URL saving
+
+Requirements:
+
+✔ Upload up to 10 images
+✔ Drag and drop upload
+✔ Image preview
+✔ Reorder photos
+✔ Cover image selection
+✔ Compression before upload
+✔ Progress bar
+✔ Retry upload
+✔ Delete image
+
+Supported formats:
+
+jpg
+jpeg
+png
+webp
+
+Maximum size:
+
+10MB each
+
+----------------------------------
+
+DATABASE FIX
+
+Verify:
+
+ads table
+profiles table
+categories table
+messages table
+
+Check:
+
+RLS policies
+Foreign keys
+Indexes
+Insert permissions
+Update permissions
+
+Automatically create missing migrations.
+
+----------------------------------
+
+AD POSTING FIX
+
+Ensure ad posting works completely.
+
+Required fields:
+
+Title
+Description
+Price
+Category
+Location
+Condition
+Photos
+
+When user clicks:
+
+POST AD
+
+System must:
+
+1. Upload photos
+2. Save image URLs
+3. Insert ad record
+4. Redirect to listing page
+5. Show success notification
+
+----------------------------------
+
+DEBUGGING
+
+Find all Internal Server Errors.
+
+For every error:
+
+1. Root cause
+2. Fix
+3. Test
+4. Verify
+
+Do not hide errors.
+
+Show proper logs.
+
+----------------------------------
+
+UI IMPROVEMENTS
+
+Make marketplace look like:
+
+OLX + Facebook Marketplace
+
+Modern dark theme.
+
+Improve:
+
+Hero section
+Cards
+Search bar
+Category grid
+Product page
+Seller profile
+
+----------------------------------
+
+TESTING
+
+Run complete end-to-end testing.
+
+Verify:
+
+Create account
+Login
+Post ad
+Upload images
+Edit ad
+Delete ad
+Search ad
+View ad
+
+Fix every failing test.
+
+----------------------------------
+
+FINAL OUTPUT
+
+Do not stop until:
+
+✔ No console errors
+✔ No build errors
+✔ No upload errors
+✔ No database errors
+✔ Ad posting works
+✔ Image upload works
+✔ Production build successful
+
+After completion provide:
+
+1. List of fixes
+2. Modified files
+3. Remaining issues
+4. Deployment readiness score
